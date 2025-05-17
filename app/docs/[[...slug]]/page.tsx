@@ -32,7 +32,7 @@ export default async function Page(props: {
       <DocsDescription>{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center mb-4">
         <EditOnGitHub
-          href={`https://github.com/${owner}/${repo}/blob/main/${path}`}
+          href={`https://github.com/${owner}/${repo}/blob/dev/${path}`}
         />
       </div>
       <DocsBody>
