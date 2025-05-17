@@ -1,4 +1,7 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import Image from "next/image";
+
+import swiftImage from "@/assets/swift.svg";
 
 /**
  * Shared layout configurations
@@ -10,19 +13,20 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
-      <>
-        <svg
-          width="24"
-          height="24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="Logo"
-        >
-          <circle cx={12} cy={12} r={12} fill="currentColor" />
-        </svg>
-        My App
-      </>
+      <div className="flex gap-3">
+        <Image src={swiftImage} alt="icon" className="size-6" /> Swift Docs
+      </div>
     ),
   },
   // see https://fumadocs.dev/docs/ui/navigation/links
-  links: [],
+  links: [
+    {
+      text: "Documentação",
+      url: "/docs",
+    },
+  ],
+  themeSwitch: {
+    mode: "light-dark-system",
+  },
+  githubUrl: "https://github.com/Felix01SA/swift-ptbr-docs",
 };

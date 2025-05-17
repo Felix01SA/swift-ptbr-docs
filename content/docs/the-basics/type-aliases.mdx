@@ -1,0 +1,20 @@
+---
+title: Type Aliases
+---
+
+_Aliases de tipo_ definem um nome alternativo para um tipo existente. Você define aliases de tipo com a palavra-chave `typealias`.
+
+Aliases de tipo são úteis quando você deseja se referir a um tipo existente por um nome que seja contextualmente mais apropriado, como ao trabalhar com dados de um tamanho específico de uma fonte externa:
+
+```swift
+typealias AudioSample = UInt16
+```
+
+Depois de definir um alias de tipo, você pode usar o alias em qualquer lugar que possa usar o nome original:
+
+```swift
+var maxAmplitudeFound = AudioSample.min
+// maxAmplitudeFound agora é 0
+```
+
+Aqui, o `AudioSample` é definido como um alias para `UInt16`. Por ser um alias, a chamada para `AudioSample.min{:swift}` na verdade chama `UInt16.min{:swift}`, que fornece um valor inicial de 0 para a variável maxAmplitudeFound.

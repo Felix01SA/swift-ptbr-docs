@@ -1,9 +1,12 @@
+import { remarkAdmonition } from "fumadocs-core/mdx-plugins";
 import {
   defineConfig,
   defineDocs,
   frontmatterSchema,
   metaSchema,
-} from 'fumadocs-mdx/config';
+} from "fumadocs-mdx/config";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 
 // You can customise Zod schemas for frontmatter and `meta.json` here
 // see https://fumadocs.vercel.app/docs/mdx/collections#define-docs
@@ -18,6 +21,15 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    // MDX options
+    remarkPlugins: [remarkAdmonition, remarkMath],
+    rehypePlugins: (v) => [rehypeKatex, ...v],
+    rehypeCodeOptions: {
+      themes: {
+        dark: "catppuccin-mocha",
+        light: "catppuccin-latte",
+      },
+      inline: "tailing-curly-colon",
+    },
   },
+  lastModifiedTime: "git",
 });

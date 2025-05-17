@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "constants-and-variables",
+    "comments",
+    "semicolons",
+    "integers",
+    "floating-point-numbers",
+    "type-safety-and-type-inference",
+    "numeric-literal",
+    "numeric-type-conversion",
+    "type-aliases",
+    "booleans",
+    "..."
+  ]
+}

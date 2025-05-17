@@ -1,0 +1,1019 @@
+---
+title: Um Tour Pelo Swift
+icon: Binoculars
+---
+
+A tradição sugere que o primeiro programa em um novo idioma deve imprimir as palavras “Olá, mundo!” Na tela. No Swift, isso pode ser feito em uma única linha:
+
+```swift
+print("Olá, mundo!")
+```
+
+Se você escreveu código em C ou Objective-C, essa sintaxe parece familiar para você—em Swift, essa linha de código é um programa completo. Você não precisa importar uma biblioteca separada para funcionalidades como entrada/saída ou manipulação de strings. O código escrito no escopo global é usado como ponto de entrada para o programa, então você não precisa de uma função `main(){:swift}`. Você também não precisa escrever ponto e vírgula (`;`) no final de cada instrução.
+
+Este tour fornece informações suficientes para começar a escrever código em Swift, mostrando como realizar uma variedade de tarefas de programação. Não se preocupe se você não entender algo - tudo o que é apresentado neste passeio é explicado em detalhes no resto dessa documentação.
+
+# Valores Simples
+
+### `let` e `var`
+
+Use `let` para definir uma constante e `var` para definir uma variável. O valor de uma constante não precisa ser reconhecido no momento da compilação, pois seu valor só é definido uma unica vez. Isso significa que você pode usar constantes para nomear um valor que você determina uma vez, mas usa em muitos lugares.
+
+```swift
+var myVariable = 42
+myVariable = 50
+let myConstant = 42
+```
+
+Uma constante ou variável deve ter o mesmo tipo que o valor que você deseja atribuir a ela. No entanto, você nem sempre precisa escrever o tipo explicitamente. Fornecer um valor quando você cria uma constante ou variável permite que o compilador inferir seu tipo. No exemplo acima, o compilador infere que `myVariable` é um inteiro porque seu valor inicial é um inteiro.
+
+```swift
+let implicitInteger = 70
+let implicitDouble = 70.0
+let explicitDouble: Double = 70
+```
+
+:::info[Experimento]
+
+Crie uma constante com um tipo explícito de `Float` e um valor de 4.
+
+:::
+
+Os valores nunca são implicitamente convertidos para outro tipo. Se você precisar converter um valor para um tipo diferente, faça explicitamente uma instância do tipo desejado.
+
+```swift
+let label = "A Largura é "
+let width = 94
+let widthLabel = label + String(width)
+```
+
+:::info[Experimento]
+
+Tente remover a conversão para `String` da última linha. Que erro você recebe?
+
+:::
+
+### Adicionar valores em strings
+
+Há uma maneira ainda mais simples de incluir valores em strings: Escreva o valor entre parênteses e escreva uma barra invertida (`\`) antes dos parênteses. Por exemplo:
+
+```swift
+let apples = 3
+let oranges = 5
+let appleSummary = "Eu tenho \(apples) maçãs."
+let fruitSummary = "eu tenho \(apples + oranges) frutas."
+```
+
+:::info[Experimento]
+
+Use `\()` para incluir um cálculo de ponto flutuante em uma string e para incluir o nome de alguém em uma saudação.
+
+:::
+
+Use três aspas duplas (`"""`) para strings que ocupam várias linhas. O recuo no início de cada linha entre aspas é removida, desde que corresponda ao recuo das aspas de fechamento. Por exemplo:
+
+```swift
+let quotation = """
+Eu disse "Eu tenho \(apples) maçãs."
+E então eu disse "Eu tenho \(apples + oranges) pedaços de frutas."
+"""
+```
+
+### Arrays e dicionários
+
+Crie arrays e dicionários usando colchetes (`[]`) e acesse seus elementos escrevendo o índice ou chave entre parênteses. Uma vírgula é permitida após o último elemento.
+
+```swift lineNumbers
+var fruits = ["morangos", "limões", "tangerinas"]
+fruits[1] = "uvas"
+
+var occupations = [
+  "Malcolm": "Capitão",
+  "Kay": "Mecânico",
+]
+
+occupations["Jayne"] = "Relações Publicas"
+```
+
+Os arrays crescem automaticamente à medida que você adiciona elementos.
+
+```swift
+fruits.append("mirtilos")
+print(fruits)
+```
+
+Para criar um array ou dicionário vazio, use a sintaxe de inicialização.
+
+```swift
+let emptyArray: [String] = []
+let emptyDict: [String: Float] = []
+```
+
+Se as informações de tipo puderem ser inferidas, você pode escrever uma matriz vazia como `[]` e um dicionário vazio como `[:]` por exemplo, quando você define um novo valor para uma variável ou passa um argumento para uma função.
+
+```swift
+fruits = []
+occupations = [:]
+```
+
+# Controle de Fluxo
+
+Use `if` e `switch` para fazer condicionais e use `for-in`, `while` e `repeat-while` para fazer loops. Parênteses ao redor da condição ou variável de loop são opcionais. Aparelhos ao redor do corpo são necessários.
+
+### `if`
+
+```swift lineNumbers
+let individualScores = [75, 43, 103, 87, 12]
+var teamScore = 0
+
+for score in individualScores {
+  if score > 50 { // [!code focus]
+    teamScore += 3
+  } else {
+    teamScore += 1
+  }
+}
+
+print(teamScore) // 11
+```
+
+Em uma instrução `if`, o condicional deve ser uma expressão booleana isso significa que o código como `if score { ... }{:swift}` é um erro, não uma comparação implícita com zero.
+
+### `if let`
+
+Você pode usar `if` e `let` juntos para trabalhar com valores que podem estar faltando. Esses valores são representados como opcionais. Um valor opcional contém um valor ou contém `nil` para indicar que um valor está faltando. Escreva um ponto de interrogação (`?`) Após o tipo de um valor para marcar o valor como opcional.
+
+```swift lineNumbers
+var optionalString: String? = "Olá"
+print(optionalString == nil) // false
+
+var optionalName: String? = "Fulano de Paula"
+var greeting = "Olá!"
+if let name = optionalName { // [!code focus]
+  greeting = "Olá, \(name)"
+}
+```
+
+:::info[Experimento]
+
+Mude `optionalName` para `nil`. Que saudação você recebe? Adicione uma cláusula `else` que defina uma saudação diferente se `optionalName` for `nil`.
+
+:::
+
+Se o valor opcional for nulo, o condicional é falso e o código entre chaves é ignorado. Caso contrário, o valor opcional é desembrulhado e atribuído à constante após `let`, o que torna o valor desembrulhado disponível dentro do bloco de código.
+
+Outra maneira de lidar com valores opcionais é fornecer um valor padrão usando o operador `??`. Se o valor opcional estiver faltando, o valor padrão será usado em vez disso.
+
+```swift
+let nickname: String? = nil
+let fullName: String = "Fulano de Paula"
+let informalGreeting = "Oi \(nickname ?? fullName)
+```
+
+Você pode usar uma grafia mais curta para desembrulhar um valor, usando o mesmo nome para esse valor desembrulhado.
+
+```swift
+if let nickname {
+    print("Eai, \(nickname)")
+}
+```
+
+### `switch`
+
+Os switches suportam qualquer tipo de dados e uma ampla variedade de operações de comparação eles não se limitam a inteiros e testes de igualdade.
+
+```swift lineNumbers
+let vegetable = "pimentão vermelho"
+
+switch vegetable {
+  case "Aipo":
+    print("Adicione algumas passas e faça formigas em um tronco.")
+  case "pepino", "agrião":
+    print("Isso daria um bom sanduíche de chá.")
+  case let x where x.hasPrefix("pimentão")
+    print("É um picante \(x)?")
+  default:
+    print("Tudo tem um gosto bom na sopa.")
+}
+```
+
+:::info[Experimento]
+
+Tente remover o caso `default`. Que erro você recebeu?
+
+:::
+
+Observe como `let` pode ser usado em um padrão para atribuir o valor que correspondeu ao padrão a uma constante.
+
+Depois de executar o código dentro do caso `switch` que correspondeu, o programa sai da instrução `switch`. A execução não continua para o próximo caso, então você não precisa sair explicitamente do `switch` no final do código de cada caso.
+
+### `for-in`
+
+Você usa `for-in` para iterar itens em um dicionário, fornecendo um par de nomes para usar em cada par chave-valor. Os dicionários são uma coleção não encomendada, então suas chaves e valores são iterados em uma ordem arbitrária.
+
+```swift lineNumbers
+let interestingNumbers = [
+  "Primos": [2, 3, 5, 7, 11, 13],
+  "Fibonacci":  [1, 1, 2, 3, 5, 8],
+  "Quadrado": [1, 4, 9, 16, 25]
+]
+
+var largest = 0
+
+for (_, numbers) in interestingNumbers { // [!code focus]
+  for number in numbers { // [!code focus]
+    if number > largest {
+      largest = number
+    }
+  }
+}
+
+print(largest) // 25
+```
+
+:::info[Experimento]
+
+Substitua o `_` por um nome de variável e acompanhe qual tipo de número era o maior.
+
+:::
+
+### `while`
+
+Use `while` para repetir um bloco de código até que uma condição mude. A condição de um loop pode estar no final, garantindo que o loop seja executado pelo menos uma vez.
+
+```swift lineNumbers
+var n = 2
+while n < 100 { // [!code focus]
+    n *= 2
+}
+print(n) // 128
+
+var m = 2
+repeat { // [!code focus]
+    m *= 2
+} while m < 100 // [!code focus]
+print(m) // 128
+```
+
+Você pode manter um índice em um loop usando `..<` para fazer um intervalo de índices.
+
+```swift lineNumbers
+var total = 0
+// [!code word:0..<4]
+for i in 0..<4 { // [!code focus]
+  total += i
+}
+print(total)
+```
+
+Use `..<` para fazer um intervalo que omita seu valor superior e use `...` para fazer um intervalo que inclua ambos os valores.
+
+# Funções e Fechamentos
+
+Use `func` para declarar uma função. Chame uma função seguindo seu nome com uma lista de argumentos entre parênteses. Use `->` para separar os nomes e tipos de parâmetros do tipo de retorno da função.
+
+```swift lineNumbers
+// [!code focus:3]
+func greet(person: String, day: String) -> String {
+  return "Olá \(person), hoje é \(day)."
+}
+
+greet(person: "Bob", day: "Sábado")
+```
+
+:::info[Experimento]
+
+Remova o parâmetro `day`. Adicione um parâmetro para incluir o almoço especial de hoje na saudação.
+
+:::
+
+### Rotular parâmetros
+
+Por padrão, as funções usam seus nomes de parâmetros como rótulos para seus argumentos. Escreva um rótulo de argumento personalizado antes do nome do parâmetro ou escreva `_` para não usar o rótulo de argumento.
+
+```swift lineNumbers
+func greet(_ person: String, on day: String) -> String {
+  return "Olá \(person), hoje é \(day)."
+}
+
+greet("Bob", on: "Sábado")
+```
+
+Use uma tupla para fazer um valor composto, por exemplo, para retornar vários valores de uma função. Os elementos de uma tupla podem ser referidos pelo nome ou pelo número.
+
+```swift lineNumbers
+func calculateStatistics(scores: [Int]) -> (min: Int, max: Int, sum: Int) {
+  var min = scores[0]
+  var max = scores[0]
+  var sum = 0
+
+  for score in scores {
+    if score > max {
+      max = score
+    } else if score < min {
+      min = score
+    }
+
+    sum += score
+  }
+
+  return (min, max, sum)
+}
+
+let statistics = calculateStatistics(scores: [5, 3, 100, 3, 9])
+print(statistics.sum) // 120
+print(statistics.2) // 120
+```
+
+### Funções aninhadas
+
+As funções podem ser aninhadas. Funções aninhadas têm acesso a variáveis que foram declaradas na função externa. Você pode usar funções aninhadas para organizar o código em uma função longa ou complexa.
+
+```swift lineNumbers
+func returnFifteen() -> Int {
+// [!code focus:5]
+  var y = 10
+  func add() {
+    y += 5
+  }
+  add()
+
+  return y
+}
+
+returnFifteen()
+```
+
+As funções são um tipo de primeira classe. Isso significa que uma função pode retornar outra função como seu valor.
+
+```swift lineNumbers
+func makeIncrementer() -> ((Int) -> Int) {
+  func addOne(number: Int) -> Int {
+    return 1 + number
+  }
+
+  return addOne
+}
+
+var increment = makeIncrementer()
+increment(7)
+```
+
+### Função como parâmetro
+
+Uma função pode tomar outra função como um de seus argumentos.
+
+```swift lineNumbers
+// [!code word:condition:2]
+// [!code word:(Int) -> Bool]
+func hasAnyMatches(list: [Int], condition: (Int) -> Bool) -> Bool {
+  for item in list {
+    if condition(item) {
+      return true
+    }
+  }
+
+  return false
+}
+
+func lessThanTen(number: Int) -> Bool {
+  return number < 10
+}
+
+var numbers = [20, 19, 7, 12]
+
+hasAnyMatches(list: numbers, condition: lessThanTen)
+```
+
+### Fechamento sem nome
+
+As funções são, na verdade, um caso especial de fechamentos: blocos de código que podem ser chamados posteriormente. O código em um fechamento tem acesso a coisas como variáveis e funções que estavam disponíveis no escopo onde o fechamento foi criado, mesmo que o fechamento esteja em um escopo diferente quando é executado, você já viu um exemplo disso com funções aninhadas. Você pode escrever um fechamento sem um nome pelo código circundante com chaves (`{}`). Use para separar os argumentos e retornar o tipo do corpo.
+
+```swift lineNumbers
+numbers.map({ (number: Int) -> Int in
+  let result = 3 * number
+  return result
+})
+```
+
+:::info[Experimento]
+
+Reescreva o fechamento para retornar zero para todos os números ímpares.
+
+:::
+
+Você tem várias opções para escrever fechamentos de forma mais concisa. Quando o tipo de um fechamento já é conhecido, como o retorno de chamada para um delegado, você pode omitir o tipo de seus parâmetros, seu tipo de retorno ou ambos. Fechamentos de instrução única retornam implicitamente o valor de sua única instrução.
+
+```swift
+let mappedNumbers = numbers.map({ number in 3 * number })
+print(mappedNumbers) // [60, 57, 21, 36]
+```
+
+Você pode se referir aos parâmetros por número em vez de por nome - essa abordagem é especialmente útil em fechamentos muito curtos. Um fechamento passado como o último argumento para uma função pode aparecer imediatamente após os parênteses. Quando um fechamento é o único argumento para uma função, você pode omitir completamente os parênteses.
+
+```swift
+let sortedNumbers = numbers.sorted { $0 > $1 }
+print(sortedNumbers) // [20, 19, 12, 7]
+```
+
+# Objetos e classes
+
+Use `class` seguida pelo nome da classe para criar uma classe. Uma declaração de propriedade em uma classe é escrita da mesma maneira que uma declaração constante ou variável, exceto que está no contexto de uma classe. Da mesma forma, as declarações de método e função são escritas da mesma maneira.
+
+```swift lineNumbers
+class Shape {
+  var numberOfSides = 0
+  func simpleDescription() -> String {
+    return "Uma forma com \(numberOfSides) lados."
+  }
+}
+```
+
+:::info[Experimento]
+
+Adicione uma propriedade constante com let e adicione outro método que leve um argumento.
+
+:::
+
+Crie uma instância de uma classe colocando parênteses após o nome da classe. Use a sintaxe de ponto para acessar as propriedades e métodos da instância.
+
+```swift lineNumbers
+var shape = Shape()
+shape.numberOfSides = 7
+var shapeDescription = shape.simpleDescription()
+```
+
+### Inicializador `init`
+
+Esta versão da classe `Shape` está faltando algo importante: um inicializador para configurar a classe quando uma instância é criada. Use `init` para criar um.
+
+```swift lineNumbers
+class NamedShape {
+  var numberOfSides: Int = 0
+  var name: String
+
+// [!code focus:3]
+  init(name: String) {
+    self.name = name
+  }
+
+  func simpleDescription() -> String {
+    return "Uma figura de \(numberOfSides) lados."
+  }
+}
+```
+
+Observe como o `self` é usado para distinguir a propriedade de nome do argumento de nome para o inicializador. Os argumentos para o inicializador são passados como uma chamada de função quando você cria uma instância da classe. Toda propriedade precisa de um valor atribuído—seja em sua declaração (como com `numberOfSides`) ou no inicializador (como com `name`).
+
+Use `deinit` para criar um desinicializador se precisar realizar alguma limpeza antes que o objeto seja desalocado.
+
+As subclasses incluem seu nome de superclasse após seu nome de classe, separado por dois pontos. Não há exigência de classes para subclasses em qualquer classe raiz padrão, então você pode incluir ou omitir uma superclasse conforme necessário.
+
+### Sobrescrita `override`
+
+Métodos em uma subclasse que substituem a implementação da superclasse são marcados com `override`, substituir um método por acidente, sem `override`, é detectado pelo compilador como um erro. O compilador também detecta métodos com substituição que, na verdade, não substituem nenhum método na superclasse.
+
+```swift lineNumbers
+// [!code word:override]
+class Square: NamedShape {
+  var sideLength: Double
+
+  init(sideLength: Double, name: String) {
+    self.sideLength = sideLength
+    super.init(name: name)
+    numberOfSides = 4
+  }
+
+  func area() -> Double {
+    return sideLength * sideLength
+  }
+
+// [!code highlight:3]
+  override func simpleDescription() -> String {
+    return "Um quadrado com lados de comprimento \(sideLength)"
+  }
+}
+
+let test = Square(sideLength: 5.2, name: "Meu quadrado de teste")
+text.area()
+text.simpleDescription()
+```
+
+:::info[Experimento]
+
+Faça outra subclasse de `NamedShape` chamada `Circle` que pegue um raio e um nome como argumentos para seu inicializador. Implemente um método `area(){:swift}` e um método `simpleDescription(){:swift}` na classe `Circle`.
+
+:::
+
+### `get` e `set`
+
+Além das propriedades simples que são armazenadas, as propriedades podem ter um `getter` e um `setter`.
+
+```swift lineNumbers
+class EquilateralTriangle: NamedShape {
+  var sideLength: Double = 0.0
+
+  init(sideLength: Double, name: String) {
+    self.sideLength = sideLength
+    super.init(name: name)
+    numberOfSides = 3
+  }
+
+// [!code focus:8]
+  var perimeter: Double {
+    get { // [!code word:get]
+      return 3.0 * sideLength
+    }
+
+    set { // [!code word:set]
+      sideLength = newValue / 3.0
+    }
+  }
+
+  override func simpleDescription() -> String {
+    return "Um triangulo equilátero com lados de comprimento \(sideLength)."
+  }
+}
+
+var triangle = EquilateralTriangle(sideLength: 3.1, name: "Um triangulo")
+print(triangle.perimeter) // 9.3
+triangle.perimeter = 9.9
+print(triangle.perimeter) // 3.3000000000000003
+```
+
+No `setter` para perímetro, o novo valor tem o nome implícito newValue. Você pode fornecer um nome explícito entre parênteses após definir.
+
+Observe que o inicializador para a classe `EquilateralTriangle` tem três etapas diferentes:
+
+1. Definindo o valor das propriedades que a subclasse declara.
+2. Chamando o inicializador da superclasse.
+3. Alterando o valor das propriedades definidas pela superclasse. Qualquer trabalho de configuração adicional que use métodos, `getters` ou `setters` também pode ser feito neste ponto.
+
+### `willSet` e `didSet`
+
+Se você não precisar calcular a propriedade, mas ainda precisar fornecer código que seja executado antes e depois de definir um novo valor, use `willSet` e `didSet`. O código que você fornece é executado sempre que o valor muda fora de um inicializador. Por exemplo, a classe abaixo garante que o comprimento lateral de seu triângulo seja sempre o mesmo que o comprimento lateral de seu quadrado.
+
+```swift lineNumbers
+// [!code word:willSet]
+class TriangleAndSquare {
+  var triangle: EquilateralTriangle {
+    willSet {
+      square.sideLength = newValue.sideLength
+    }
+  }
+
+  var square: Square {
+    willSet {
+      triangle.sideLength = newValue.sideLength
+    }
+  }
+
+  init(size: Double, name: String) {
+    square = Square(sideLength: size, name: name)
+    triangle = EquilateralTriangle(sideLength: size, name: name)
+  }
+
+}
+
+var triangleAdSquare = TriangleAndSquare(size: 10, name: "Outra forma de teste")
+print(triangleAdSquare.square.sideLength) // 10.0
+print(triangleAdSquare.triangle.sideLength) // 10.0
+
+triangleAdSquare.square = Square(sideLength: 50, name: "Quadrado grande") // [!code highlight]
+print(triangleAdSquare.triangle.sideLength) // 50.0 // [!code highlight]
+```
+
+### Valor opcional
+
+Ao trabalhar com valores opcionais, você pode escrever `?` antes de operações como métodos, propriedades e subscritos. Se o valor antes do `?` é `nil`, tudo depois do `?` É ignorado e o valor de toda a expressão é nulo. Caso contrário, o valor opcional é desembrulhado, e tudo depois do `?` atua no valor não embrulhado. Em ambos os casos, o valor da expressão inteira é um valor opcional.
+
+```swift
+let optionalSquare: Square? = Square(sideLength: 2.5, name: "Quadrado opcional")
+let sideLength = optionalSquare?.sideLength
+```
+
+# Enumerações `enum`
+
+Use `enum` para criar uma enumeração. Como classes e todos os outros tipos nomeados, as enumerações podem ter métodos associados a elas.
+
+```swift lineNumbers
+enum Rank: Int {
+  case ace = 1
+  case two, three, four, five, six, seven, eight, nine, ten
+  case jack, queen, king
+
+  func simpleDescription() -> String {
+    switch self {
+      case .ace:
+        return "ace"
+      case .jack:
+        return "jack"
+      case .queen:
+        return "queen"
+      case .king:
+        return "king"
+      default:
+        return String(self.rawValue)
+      }
+    }
+  }
+}
+
+let ace = Rank.ace
+let aceRawValue = ace.rawValue
+```
+
+:::info[Experimento]
+
+Escreva uma função que compare dois valores de `Rank` comparando seus valores brutos.
+
+:::
+
+Por padrão, o Swift atribui os valores brutos começando em zero e aumentando em um a cada vez, mas você pode alterar esse comportamento especificando explicitamente os valores. No exemplo acima, Ace recebe explicitamente um valor bruto de 1, e o restante dos valores brutos é atribuído em ordem. Você também pode usar strings ou números de ponto flutuante como o tipo bruto de uma enumeração. Use a propriedade `rawValue` para acessar o valor bruto de um caso de enumeração.
+
+Usar o inicializador `init?(rawValue:){:swift}` para fazer uma instância de uma enumeração a partir de um valor bruto. Ele retorna o caso de enumeração que corresponde ao valor bruto ou nulo se não houver classificação correspondente.
+
+```swift lineNumbers
+if let convertedRank = Rank(rawValue: 3) {
+  let threeDescription = convertedRank.simpleDescription()
+}
+```
+
+Os valores de uma enumeração são valores reais, não apenas outra forma de representar seus valores originais. Na verdade, quando não há um valor original importante, você não precisa fornecer um.
+
+```swift lineNumbers
+enum Suit {
+  case spades, hearts, diamonds, clubs
+
+  func simpleDescription() -> String {
+    switch self {
+      case .spades:
+        return "spades"
+      case .hearts:
+        return "hearts"
+      case .diamonds:
+        return "diamonds"
+      case .clubs:
+        return "clubs"
+    }
+  }
+}
+
+let hearts = Suit.hearts
+let heartsDescription = hearts.simpleDescription()
+```
+
+:::info[Experimento]
+
+Adicione um método `color(){:swift}` ao `Suit` que retorna “preto” para espadas e paus, e retorna “vermelho” para corações e diamantes.
+
+:::
+
+Observe as duas maneiras pelas quais o caso de corações da enumeração é referido acima: Ao atribuir um valor à constante de corações, o caso de enumeração `Suit.hearts{:swift}` é referido pelo seu nome completo porque a constante não tem um tipo explícito especificado. Dentro do interruptor, o caso de enumeração é referido pela forma abreviada `.hearts` porque o valor de `self` já é conhecido por ser um naipe. Você pode usar a forma abreviada sempre que o tipo de valor já for conhecido.
+
+Se uma enumeração tiver valores brutos, esses valores serão determinados como parte da declaração, o que significa que cada instância de um caso de enumeração específico sempre tem o mesmo valor bruto. Outra opção para casos de enumeração é ter valores associados ao caso, esses valores são determinados quando você faz a instância e podem ser diferentes para cada instância de um caso de enumeração. Você pode pensar nos valores associados como se comportando como propriedades armazenadas da instância do caso de enumeração. Por exemplo, considere o caso de solicitar os horários do nascer e do pôr do sol de um servidor. O servidor responde com as informações solicitadas ou responde com uma descrição do que deu errado.
+
+```swift lineNumbers
+enum ServerResponse {
+  case result(String, String)
+  case failure(String)
+}
+
+let success = ServerResponse.result("06:00", "20:09")
+
+let failure = ServerResponse.failure("Sem queijo.")
+
+switch success {
+  case let .result(sunrise, sunset):
+    print("Nascer do sol é às \(sunset) e o pôr do sol é às \(sunrise).")
+  case let .failure(message):
+    print("Deu ruim... \(message)")
+}
+
+// Retorna: "Nascer do sol é às 06:00 e o pôr do sol é às 20:09"
+```
+
+:::info[Experimento]
+
+Adicione um terceiro caso ao `ServerResponse` e ao switch.
+
+:::
+
+Observe como os horários do nascer e do pôr do sol são extraídos do valor `ServerResponse` como parte da correspondência do valor com os casos de comutação.
+
+# Estruturas `struct`
+
+Use `struct` para criar uma estrutura. As estruturas suportam muitos dos mesmos comportamentos que as classes, incluindo métodos e inicializadores. Uma das diferenças mais importantes entre estruturas e classes é que as estruturas são sempre copiadas quando são passadas em seu código, mas as classes são passadas por referência.
+
+```swift lineNumbers
+struct Card {
+  var rank: Rank
+  var suit: Suit
+
+  func simpleDescription() -> String {
+    return "O \(rank.simpleDescription()) de \(suit.simpleDescription())"
+  }
+}
+
+let threeOfSpades = Card(rank: .three, suit: .spades)
+let threeOfSpadesDescription = threeOfSpades.simpleDescription()
+```
+
+:::info[Experimento]
+
+Escreva uma função que retorne um array contendo um baralho completo de cartas, com uma carta de cada combinação de classificação e naipe.
+
+:::
+
+# Assincronicidade
+
+Use `async` para marcar que uma função será executada de forma assíncrona.
+
+```swift lineNumbers
+// [!code word:async]
+func fetchUserID(from server: String) async -> Int {
+  if server == "primary" {
+    return 97
+  }
+
+  return 501
+}
+```
+
+Você marca uma chamada para uma função assíncrona escrevendo `await` na frente dela.
+
+```swift lineNumbers
+func fetchUsername(from server: String) async -> String {
+  // [!code focus]
+  // [!code word:await]
+  let userID = await fetchUserID(from: server)
+  if userID == 501 {
+    return "Fulano de Paula"
+  }
+
+  return "Convidado"
+}
+```
+
+Use `async let` para chamar uma função assíncrona, deixando-a ser executada em paralelo com outro código assíncrono. Quando você usar o valor que ele retorna, escreva `await`.
+
+```swift lineNumbers
+func connectUser(to server: String) async {
+  // [!code focus:3]
+  async let userID = fetchUserID(from: server)
+  async let username = fetchUsername(from: server)
+  let greeting = await "Olá \(username), ID de usuário \(userID)"
+
+  print(greeting)
+}
+```
+
+Use a `Task` para chamar funções assíncronas de código síncrono, sem esperar que elas retornem.
+
+```swift lineNumbers
+Task {
+  await connectUser(to: "primary")
+}
+
+// Retorna "Olá Convidado, ID de usuário 97"
+```
+
+# Protocolos e Extensões
+
+### Protocolos
+
+Use `protocol` para declarar um protocolo.
+
+```swift lineNumbers
+protocol ExampleProtocol {
+  var simpleDescription: String { get }
+  mutating func adjust()
+}
+```
+
+Classes, enumerações e estruturas podem adotar protocolos.
+
+```swift lineNumbers
+class SimpleClass: ExampleProtocol {
+  var simpleDescription: String = "Uma classe muito simples."
+  var anotherProperty: Int = 69105
+  func adjust() {
+    simpleDescription += " Agora 100% ajustada"
+  }
+}
+
+var a = SimpleClass()
+a.adjust()
+let aDescription = a.simpleDescription
+
+struct SimpleStructure: ExampleProtocol {
+  var simpleDescription: String = "Uma simples estrutura"
+  mutating func adjust() {
+    simpleDescription += " (ajustada)"
+  }
+}
+
+var b = SimpleStructure()
+b.adjust()
+let bDescription = b.simpleDescription
+```
+
+:::info[Experimento]
+
+Adicione outro requisito ao `ExampleProtocol`. Que alterações você precisa fazer no `SimpleClass` e no `SimpleStructure` para que eles ainda estejam em conformidade com o protocolo?
+
+:::
+
+Observe o uso da palavra-chave `mutating` na declaração de `SimpleStructure` para marcar um método que modifica a estrutura. A declaração de `SimpleClass` não precisa de nenhum de seus métodos marcados como mutação porque os métodos em uma classe sempre podem modificar a classe.
+
+### Extensões
+
+Use `extension` para adicionar funcionalidade a um tipo existente, como novos métodos e propriedades computadas. Você pode usar uma extensão para adicionar conformidade de protocolo a um tipo declarado em outro lugar, ou até mesmo a um tipo que você importou de uma biblioteca ou estrutura.
+
+```swift lineNumbers
+extension Int: ExampleProtocol {
+  var simpleDescription: String {
+    return "O numero \(self)"
+  }
+
+  mutating func adjust() {
+    self += 42
+  }
+}
+
+print(7.simpleDescription) // O numero 7
+```
+
+:::info[Experimento]
+
+Escreva uma extensão para o tipo `Double` que adicione uma propriedade `absoluteValue`.
+
+:::
+
+Você pode usar um nome de protocolo como qualquer outro tipo nomeado, por exemplo, para criar uma coleção de objetos que tenham tipos diferentes, mas que todos estejam em conformidade com um único protocolo. Quando você trabalha com valores cujo tipo é um tipo de protocolo, métodos fora da definição de protocolo não estão disponíveis.
+
+```swift
+let protocolValue: ExampleProtocol = a
+print(protocolValue.simpleDescription) // Uma classe muito simples. Agora 100% ajustada.
+
+// print(protocolValue.anotherProperty) // Descomente para ver o erro
+```
+
+Mesmo que a variável `protocolValue` tenha um tipo de tempo de execução de `SimpleClass`, o compilador a trata como o tipo dado de `ExampleProtocol`. Isso significa que você não pode acessar acidentalmente métodos ou propriedades que a classe implementa além de sua conformidade de protocolo.
+
+# Tratamento de Erros
+
+Você representa erros usando qualquer tipo que adote o protocolo `Error`.
+
+```swift lineNumbers
+enum PrinterError: Error {
+  case outOfPaper
+  case noToner
+  case onFire
+}
+```
+
+### `throw` e `throws`
+
+Use `throw` para lançar um erro e `throws` para marcar uma função que pode lançar um erro. Se você lançar um erro em uma função, a função retornará imediatamente e o código que chamou a função lida com o erro.
+
+```swift lineNumbers
+func send(job: Int, toPrinter printerName: String) throws -> String { // [!code word:throws]
+  if printerName == "Nunca tem Toner" {
+    throw PrinterError.noToner // [!code word:throw]
+  }
+
+  return "Tarefa enviada"
+}
+```
+
+### `do-catch`
+
+Existem várias maneiras de lidar com erros. Uma maneira é usar o `do-catch`. Dentro do bloco `do`, você marca o código que pode lançar um erro escrevendo `try` na frente dele. Dentro do bloco `catch`, o erro recebe automaticamente o nome de erro, a menos que você dê a ele um nome diferente.
+
+```swift lineNumbers
+do { // [!code word:do]
+  let printerResponse = try send(job: 1040, toPrinter: "Epson") // [!code word:try]
+  print(printerResponse) // Tarefa enviada
+} catch { // [!code word:catch]
+  print(error)
+}
+```
+
+:::info[Experimento]
+
+Altere o nome da impressora para "Nunca tem Toner", para que a função `send(job:toPrinter:){:swift}` lance um erro.
+
+:::
+
+Você pode fornecer vários blocos de captura que lidam com erros específicos. Você escreve um padrão após a captura, assim como faz após o caso em um switch.
+
+```swift
+do {
+  let printerResponse = try send(job: 1440, toPrinter: "Cannon")
+  print(printerResponse) // Tarefa enviada
+  // [!code focus:4]
+} catch PrinterError.onFire {
+  print("Vou colocar isso aqui, com o resto do fogo.")
+} catch let printerError as PrinterError {
+  print("Erro na impressão: \(printerError)")
+} catch {
+  print(error)
+}
+```
+
+:::info[Experimento]
+
+Adicione código para lançar um erro dentro do bloco `do`. Que tipo de erro você precisa lançar para que o erro seja tratado pelo primeiro bloco de captura? E quanto ao segundo e terceiro blocos?
+
+:::
+
+### `try?`
+
+Outra maneira de lidar com erros é usar `try?` para converter o resultado em um opcional. Se a função lançar um erro, o erro específico será descartado e o resultado será nulo. Caso contrário, o resultado é um opcional contendo o valor que a função retornou.
+
+```swift lineNumbers
+let printerSuccess = try? send(job: 1884, toPrinter: "HP")
+let printerFailure = try? send(job: 1885, toPrinter: "Nunca tem Toner")
+```
+
+### `defer`
+
+Use `defer` para escrever um bloco de código que é executado após todo o outro código na função, pouco antes da função retornar. O código é executado independentemente de a função lançar um erro. Você pode usar o `defer` para gravar o código de configuração e limpeza um ao lado do outro, mesmo que eles precisem ser executados em momentos diferentes.
+
+```swift lineNumbers
+var fridgeIsOpen = false
+let fridgeContent = ["leite", "ovos", "sobras"]
+
+func fridgeContains(_ food: String) -> Bool {
+  fridgeIsOpen = true
+  defer {
+    fridgeIsOpen = false
+  }
+
+  let result = fridgeContent.contains(food)
+  return result
+}
+
+fridgeContains("banana")
+print(fridgeIsOpen) // false
+```
+
+# Genéricos
+
+Escreva um nome entre colchetes para fazer uma função ou tipo genérico.
+
+```swift lineNumbers
+// [!code word:<Item>]
+// [!code word:[Item\]:1]
+func makeArray<Item>(repeating item: Item, numberOfTimes: Int) -> [Item] { //[!code focus]
+  var result: [Item] = []
+  for _ in 0..<numberOfTimes {
+    result.append(item)
+  }
+
+  return result
+}
+
+makeArray(repeating: "batida", numberOfTimes: 4)
+```
+
+Você pode fazer formas genéricas de funções e métodos, bem como classes, enumerações e estruturas.
+
+```swift lineNumbers
+// Reimplemente o tipo opcional da biblioteca padrão Swift
+enum OptionalValue<Wrapped> {
+  case none
+  case some(Wrapped)
+}
+
+var possibleInteger: OptionalValue<Int> = .none
+possibleInteger = .some(100)
+```
+
+Use `where` logo antes do corpo para especificar uma lista de requisitos, por exemplo, para exigir que o tipo implemente um protocolo, para exigir que dois tipos sejam iguais ou para exigir que uma classe tenha uma superclasse específica.
+
+```swift
+func anyCommonElements<T: Sequence, U: Sequence>(_ lhs: T, _ rhs: U) -> Bool
+  where T.Element: Equatable, T.Element == U.Element { // [!code highlight]
+    for lhsItem in lhs {
+      for rhsItem in rhs {
+        if lhsItem == rhsItem {
+          return true
+        }
+      }
+    }
+
+    return false
+}
+
+anyCommonElements([1, 2, 3], [3])
+```
+
+:::info[Experimento]
+
+Modifique a função `anyCommonElements(_:_:){:swift}` para criar uma função que retorne um array dos elementos que quaisquer duas sequências têm em comum.
+
+:::
+
+Escrever `<T: Equatable>{:swift}` é o mesmo que escrever `<T> ...{:swift}` onde `T: Equatable{:swift}`.

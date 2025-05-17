@@ -1,0 +1,16 @@
+---
+title: Compatibilidade de versão
+icon: GitBranch
+---
+
+Esta documentação descreve o Swift 5.7, a versão padrão do Swift que está incluída no Xcode 14. Você pode usar o Xcode 14 para criar alvos escritos em Swift 5.7, Swift 4.2 ou Swift 4.
+
+Quando você usa o Xcode 14 para criar o código Swift 4 e Swift 4.2, a maior parte da funcionalidade do Swift 5.7 está disponível. Dito isso, as seguintes alterações estão disponíveis apenas para o código que usa Swift 5.7 ou posterior:
+
+- Funções que retornam um tipo opaco exigem o tempo de execução do Swift 5.1.
+- O _`try`_? Expressão não introduz um nível extra de opcionalidade para expressões que já retornam opcionais.
+- Grandes expressões de inicialização literal de inteiros são inferidas como sendo do tipo inteiro correto. Por exemplo, `UInt64(0xffff_ffff_ffff_ffff){:swift}` avalia o valor correto em vez de transbordar.
+
+A concorrência requer Swift 5.7 ou posterior, e uma versão da biblioteca padrão Swift que fornece os tipos de concorrência correspondentes. Nas plataformas Apple, defina uma meta de implantação de pelo menos iOS 15, macOS 12, tvOS 15 ou watchOS 8.0.
+
+Um código escrito em Swift 5.7 pode depender de um outro escrito em Swift 4.2 ou Swift 4, e vice-versa. Isso significa que, se você tiver um projeto grande dividido em várias estruturas, poderá migrar seu código do Swift 4 para o Swift 5.7, uma estrutura de cada vez.

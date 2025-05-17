@@ -1,0 +1,14 @@
+{
+  "cSpell.words": [
+    "booleana",
+    "fumadocs",
+    "Fumadocs"
+  ],
+  "tailwindCSS.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.hg/**",
+    "**/.svn/**",
+    "**/*.mdx"
+  ]
+}
