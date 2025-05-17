@@ -1,0 +1,16 @@
+{
+  "title": "O Básico",
+  "pages": [
+    "constants-and-variables",
+    "comments",
+    "semicolons",
+    "integers",
+    "floating-point-numbers",
+    "type-safety-and-type-inference",
+    "numeric-literals",
+    "numeric-type-conversion",
+    "type-aliases",
+    "booleans",
+    "tuples"
+  ]
+}

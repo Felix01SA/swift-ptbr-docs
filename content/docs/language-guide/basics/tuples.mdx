@@ -1,0 +1,60 @@
+---
+title: Tuplas
+description: Aqui não a preconceito, gosto de juntar a galera
+---
+
+As _tuplas_ agrupam vários valores em um único valor composto. Os valores dentro de uma tupla podem ser de qualquer tipo e não precisam ser do mesmo tipo entre si.
+
+Neste exemplo, `(404, "Not Found"){:swift}` é uma tupla que descreve um código de status HTTP. Um código de status HTTP é um valor especial retornado por um servidor da web sempre que você solicita uma página da web. Um código de status de 404 Não Encontrado é retornado se você solicitar uma página da web que não existe.
+
+```swift
+let http404Error = (404, "Not Found")
+// http404Error é do tipo (Int, String), e é igual a (404, "Not Found")
+```
+
+A tupla `(404, "Não Encontrado"){:swift}` agrupa um `Int` e uma `String` para dar ao código de status HTTP dois valores separados: um número e uma descrição legível por humanos. Pode ser descrito como “uma tupla do tipo `(Int, String){:swift}`”.
+
+Você pode criar tuplas a partir de qualquer permutação de tipos, e elas podem conter quantos tipos diferentes você quiser. Não há nada que o impeça de ter uma tupla de tipo `(Int, Int, Int){:swift}`, ou `(String, Bool){:swift}`, ou de fato qualquer outra permutação que você precise.
+
+Você pode decompor o conteúdo de uma tupla em constantes ou variáveis separadas, que você acessa normalmente:
+
+```swift
+let (statusCode, statusMessage) = http404Error
+print("O código de status é \(statusCode)") // O código de status é 404
+print("A mensagem de status é \(statusMessage)") // A mensagem de status é Not Found
+```
+
+Se você precisar apenas de alguns dos valores da tupla, ignore partes da tupla com um sublinhado (`_`) ao decompor a tupla:
+
+```swift
+let (justTheStatusCode, _) = http404Error // [!code word:_]
+print("O código de status é \(justTheStatusCode)") // O código de status é 404
+```
+
+Alternativamente, acesse os valores de elementos individuais em uma tupla usando números de índice começando em zero:
+
+```swift
+print("O código de status é \(http404Error.0)") // O código de status é 404
+print("A mensagem de status é \(http404Error.1)") // A mensagem de status é Not Found
+```
+
+Você pode nomear os elementos individuais em uma tupla quando a tupla é definida:
+
+```swift
+let http200status = (statusCode: 200, description: "OK")
+```
+
+Se você nomear os elementos em uma tupla, poderá usar os nomes dos elementos para acessar os valores desses elementos:
+
+```swift
+print("O código de status é \(http200status.statusCode)") // O código de status é 200
+print("A mensagem de status é \(http200status.description)") // A mensagem de status é OK
+```
+
+As tuplas são particularmente úteis como valores de retorno das funções. Uma função que tenta recuperar uma página da web pode retornar o tipo de tupla `(Int, String){:swift}` para descrever o sucesso ou falha da recuperação da página. Ao retornar uma tupla com dois valores distintos, cada um de um tipo diferente, a função fornece informações mais úteis sobre seu resultado do que se pudesse retornar apenas um único valor de um único tipo. Para mais informações, consulte [Funções com Vários Valores de Retorno]().
+
+:::info[Nota]
+
+Tuplas são úteis para grupos simples de valores relacionados. Eles não são adequados para a criação de estruturas de dados complexas. Se sua estrutura de dados provavelmente será mais complexa, modele-a como uma classe ou estrutura, em vez de como uma tupla. Para mais informações, consulte [Estruturas e Classes]().
+
+:::
