@@ -1,8 +1,12 @@
 {
   "cSpell.words": [
     "booleana",
+    "catppuccin",
     "fumadocs",
-    "Fumadocs"
+    "Fumadocs",
+    "katex",
+    "oklch",
+    "tailwindcss"
   ],
   "tailwindCSS.files.exclude": [
     "**/.git/**",

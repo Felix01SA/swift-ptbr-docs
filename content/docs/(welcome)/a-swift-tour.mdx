@@ -13,7 +13,7 @@ Se você escreveu código em C ou Objective-C, essa sintaxe parece familiar para
 
 Este tour fornece informações suficientes para começar a escrever código em Swift, mostrando como realizar uma variedade de tarefas de programação. Não se preocupe se você não entender algo - tudo o que é apresentado neste passeio é explicado em detalhes no resto dessa documentação.
 
-# Valores Simples
+## Valores Simples
 
 ### `let` e `var`
 
@@ -116,7 +116,7 @@ fruits = []
 occupations = [:]
 ```
 
-# Controle de Fluxo
+## Controle de Fluxo
 
 Use `if` e `switch` para fazer condicionais e use `for-in`, `while` e `repeat-while` para fazer loops. Parênteses ao redor da condição ou variável de loop são opcionais. Aparelhos ao redor do corpo são necessários.
 
@@ -268,7 +268,7 @@ print(total)
 
 Use `..<` para fazer um intervalo que omita seu valor superior e use `...` para fazer um intervalo que inclua ambos os valores.
 
-# Funções e Fechamentos
+## Funções e Fechamentos
 
 Use `func` para declarar uma função. Chame uma função seguindo seu nome com uma lista de argumentos entre parênteses. Use `->` para separar os nomes e tipos de parâmetros do tipo de retorno da função.
 
@@ -416,7 +416,7 @@ let sortedNumbers = numbers.sorted { $0 > $1 }
 print(sortedNumbers) // [20, 19, 12, 7]
 ```
 
-# Objetos e classes
+## Objetos e classes
 
 Use `class` seguida pelo nome da classe para criar uma classe. Uma declaração de propriedade em uma classe é escrita da mesma maneira que uma declaração constante ou variável, exceto que está no contexto de uma classe. Da mesma forma, as declarações de método e função são escritas da mesma maneira.
 
@@ -592,7 +592,7 @@ let optionalSquare: Square? = Square(sideLength: 2.5, name: "Quadrado opcional")
 let sideLength = optionalSquare?.sideLength
 ```
 
-# Enumerações `enum`
+## Enumerações `enum`
 
 Use `enum` para criar uma enumeração. Como classes e todos os outros tipos nomeados, as enumerações podem ter métodos associados a elas.
 
@@ -701,7 +701,7 @@ Adicione um terceiro caso ao `ServerResponse` e ao switch.
 
 Observe como os horários do nascer e do pôr do sol são extraídos do valor `ServerResponse` como parte da correspondência do valor com os casos de comutação.
 
-# Estruturas `struct`
+## Estruturas `struct`
 
 Use `struct` para criar uma estrutura. As estruturas suportam muitos dos mesmos comportamentos que as classes, incluindo métodos e inicializadores. Uma das diferenças mais importantes entre estruturas e classes é que as estruturas são sempre copiadas quando são passadas em seu código, mas as classes são passadas por referência.
 
@@ -725,7 +725,7 @@ Escreva uma função que retorne um array contendo um baralho completo de cartas
 
 :::
 
-# Assincronicidade
+## Assincronicidade
 
 Use `async` para marcar que uma função será executada de forma assíncrona.
 
@@ -778,7 +778,7 @@ Task {
 // Retorna "Olá Convidado, ID de usuário 97"
 ```
 
-# Protocolos e Extensões
+## Protocolos e Extensões
 
 ### Protocolos
 
@@ -861,7 +861,7 @@ print(protocolValue.simpleDescription) // Uma classe muito simples. Agora 100% a
 
 Mesmo que a variável `protocolValue` tenha um tipo de tempo de execução de `SimpleClass`, o compilador a trata como o tipo dado de `ExampleProtocol`. Isso significa que você não pode acessar acidentalmente métodos ou propriedades que a classe implementa além de sua conformidade de protocolo.
 
-# Tratamento de Erros
+## Tratamento de Erros
 
 Você representa erros usando qualquer tipo que adote o protocolo `Error`.
 
@@ -959,7 +959,7 @@ fridgeContains("banana")
 print(fridgeIsOpen) // false
 ```
 
-# Genéricos
+## Genéricos
 
 Escreva um nome entre colchetes para fazer uma função ou tipo genérico.
 

@@ -2,11 +2,13 @@
 title: Conversão de tipo numérico
 ---
 
+# Conversão de tipo numérico
+
 Use o tipo Int para todas as constantes e variáveis inteiras de uso geral em seu código, mesmo que sejam conhecidas por não serem negativas. Usar o tipo inteiro padrão em situações cotidianas significa que constantes e variáveis inteiras são imediatamente interoperáveis em seu código e corresponderão ao tipo inferido para valores literais inteiros.
 
 Use outros tipos inteiros apenas quando forem especificamente necessários para a tarefa em questão, por causa de dados explicitamente dimensionados de uma fonte externa ou para desempenho, uso de memória ou outras otimizações necessárias. O uso de tipos de tamanho explícito nessas situações ajuda a capturar quaisquer excessos acidentais de valor e documenta implicitamente a natureza dos dados que estão sendo usados.
 
-# Conversão de Inteiro
+### Conversão de Inteiro
 
 O intervalo de números que podem ser armazenados em uma constante ou variável inteira é diferente para cada tipo numérico. Uma constante ou variável `Int8` pode armazenar números entre -128 e 127, enquanto uma constante ou variável `UInt8` pode armazenar números entre 0 e 255. Um número que não se encaixa em uma constante ou variável de um tipo inteiro de tamanho é relatado como um erro quando seu código é compilado:
 
@@ -32,7 +34,7 @@ Como ambos os lados da adição agora são do tipo `UInt16`, a adição é permi
 
 `SomeType(ofInitialValue){:swift}` é a maneira padrão de chamar o inicializador de um tipo Swift e passar um valor inicial. Nos bastidores, o `UInt16` tem um inicializador que aceita um valor UInt8 e, portanto, esse inicializador é usado para criar um novo `UInt16` a partir de um UInt8 existente. Você não pode passar nenhum tipo aqui, no entanto, tem que ser um tipo para o qual o `UInt16` fornece um inicializador. A extensão dos tipos existentes para fornecer inicializadores que aceitam novos tipos (incluindo suas próprias definições de tipo) é abordado em [Extensões]().
 
-# Conversão de Inteiro e Ponto Flutuante
+### Conversão de Inteiro e Ponto Flutuante
 
 As conversões entre tipos numéricos inteiros e de ponto flutuante devem ser explicitadas:
 
