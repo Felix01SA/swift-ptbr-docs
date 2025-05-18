@@ -1,11 +1,5 @@
 {
   "title": "Guia da Linguagem",
-  "pages": [
-    "./basics/index",
-    "./basic-operators/index",
-    "./collection-types/index",
-    "./error-handling/index",
-    "./control-flow/index"
-  ],
+  "pages": ["./basics/index", "./basic-operators/index"],
   "icon": "BookMarked"
 }
