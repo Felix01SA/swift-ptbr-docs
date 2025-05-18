@@ -1,4 +1,4 @@
-import type { DocsLayoutProps } from "fumadocs-ui/layouts/notebook";
+import type { DocsLayoutProps } from "fumadocs-ui/layouts/docs";
 import { baseOptions } from "../layout.config";
 import { StarOnGithubButton } from "@/components/star-on-github-button";
 
