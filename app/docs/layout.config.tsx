@@ -1,5 +1,6 @@
-import type { DocsLayoutProps } from "fumadocs-ui/layouts/docs";
+import type { DocsLayoutProps } from "fumadocs-ui/layouts/notebook";
 import { baseOptions } from "../layout.config";
+import { StarOnGithubButton } from "@/components/star-on-github-button";
 
 /**
  * Shared layout configurations
@@ -11,5 +12,5 @@ import { baseOptions } from "../layout.config";
 export const docsOptions: Partial<DocsLayoutProps> = {
   ...baseOptions,
   // see https://fumadocs.dev/docs/ui/navigation/links
-  links: [],
+  links: [{ on: "nav", children: <StarOnGithubButton />, type: "custom" }],
 };

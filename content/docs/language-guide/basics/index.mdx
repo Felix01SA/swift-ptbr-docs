@@ -1,10 +1,11 @@
 ---
 title: O Básico
+description: Informações importantes pra você iniciante
 ---
 
 Swift é uma nova linguagem de programação para o desenvolvimento de aplicativos iOS, macOS, watchOS e tvOS. No entanto, muitas partes do Swift serão familiares a partir de sua experiência de desenvolvimento em C e Objective-C.
 
-Swift fornece suas próprias versões de todos os tipos fundamentais de C e Objective-C, incluindo Int para inteiros, Double e Float para valores de ponto flutuante, Bool para valores booleanos e String para dados textuais. O Swift também fornece versões poderosas dos três tipos de coleção primários, Array, Set e Dictionary, conforme descrito em [Tipos de Coleção]().
+Swift fornece suas próprias versões de todos os tipos fundamentais de C e Objective-C, incluindo `Int` para inteiros, `Double` e `Float` para valores de ponto flutuante, `Bool` para valores booleanos e `String` para dados textuais. O Swift também fornece versões poderosas dos três tipos de coleção primários, `Array`, `Set` e `Dictionary`, conforme descrito em [Tipos de Coleção](../collection-types/index.mdx).
 
 Como C, o Swift usa variáveis para armazenar e se referir a valores por um nome de identificação. O Swift também faz uso extensivo de variáveis cujos valores não podem ser alterados. Estas são conhecidas como constantes e são muito mais poderosas do que as constantes em C. As constantes são usadas em todo o Swift para tornar o código mais seguro e claro na intenção quando você trabalha com valores que não precisam mudar.
 
@@ -13,3 +14,18 @@ Além dos tipos familiares, o Swift introduz tipos avançados não encontrados n
 O Swift também introduz tipos opcionais, que lidam com a ausência de um valor. Opcionais dizem “há um valor, e é igual a x” ou “não há valor algum”. Usar opcionais é semelhante ao uso de nil com ponteiros no Objective-C, mas eles funcionam para qualquer tipo, não apenas para classes. Os opcionais não são apenas mais seguros e expressivos do que os ponteiros nulos no Objective-C, como também estão no centro de muitos dos recursos mais poderosos do Swift.
 
 Swift é uma linguagem de tipo seguro, o que significa que a linguagem ajuda você a ser claro sobre os tipos de valores com os quais seu código pode trabalhar. Se parte do seu código requer uma String, a segurança do tipo impede que você passe um Int por engano. Da mesma forma, a segurança do tipo impede que você passe acidentalmente uma String opcional para um pedaço de código que requer um String não opcional. Tipos seguros ajuda você a detectar e corrigir erros o mais cedo possível no processo de desenvolvimento.
+
+<include>./constants-and-variables.mdx</include>
+<include>./comments.mdx</include>
+<include>./semicolons.mdx</include>
+<include>./integers.mdx</include>
+<include>./floating-point-numbers.mdx</include>
+<include>./type-safety-and-type-inference.mdx</include>
+<include>./numeric-literal.mdx</include>
+<include>./numeric-type-conversion.mdx</include>
+<include>./type-aliases.mdx</include>
+<include>./booleans.mdx</include>
+<include>./tuples.mdx</include>
+<include>./optionals.mdx</include>
+<include>./error-handling.mdx</include>
+<include>./assertions-and-preconditions.mdx</include>

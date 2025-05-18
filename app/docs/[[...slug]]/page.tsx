@@ -7,9 +7,18 @@ import {
   EditOnGitHub,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
-import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
 import { owner, repo } from "@/lib/github";
+import { Card, Cards } from "fumadocs-ui/components/card";
+import { getPageTreePeers } from "fumadocs-core/server";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import Link from "next/link";
+
+export const revalidate = false;
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -26,7 +35,7 @@ export default async function Page(props: {
     <DocsPage
       toc={page.data.toc}
       full={page.data.full}
-      tableOfContent={{ style: "clerk", single: false }}
+      tableOfContent={{ style: "clerk" }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
@@ -39,11 +48,51 @@ export default async function Page(props: {
         <MDXContent
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
-            a: createRelativeLink(source, page),
+            a: ({ href, ...props }) => {
+              const found = source.getPageByHref(href ?? "", {
+                dir: page.file.dirname,
+              });
+
+              if (!found) return <Link href={href} {...props} />;
+
+              return (
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <Link
+                      href={
+                        found.hash
+                          ? `${found.page.url}#${found.hash}`
+                          : found.page.url
+                      }
+                      {...props}
+                    />
+                  </HoverCardTrigger>
+                  <HoverCardContent className="text-sm">
+                    <p className="font-medium">{found.page.data.title}</p>
+                    <p className="text-fd-muted-foreground">
+                      {found.page.data.description}
+                    </p>
+                  </HoverCardContent>
+                </HoverCard>
+              );
+            },
           })}
         />
+        {page.data ? <DocsCategory url={page.url} /> : null}
       </DocsBody>
     </DocsPage>
+  );
+}
+
+function DocsCategory({ url }: { url: string }) {
+  return (
+    <Cards>
+      {getPageTreePeers(source.pageTree, url).map((peer) => (
+        <Card key={peer.url} title={peer.name} href={peer.url}>
+          {peer.description}
+        </Card>
+      ))}
+    </Cards>
   );
 }
 
