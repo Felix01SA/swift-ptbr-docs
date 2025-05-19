@@ -45,6 +45,15 @@ export default async function Page(props: {
         <EditOnGitHub
           href={`https://github.com/${owner}/${repo}/blob/dev/${path}`}
         />
+
+        {page.data.lastModified && (
+          <div className="text-sm text-muted-foreground bg-card rounded-md p-1.5 w-fit select-none">
+            Ultima modificação:{" "}
+            <span>
+              {format(page.data.lastModified, "PPP", { locale: ptBR })}
+            </span>
+          </div>
+        )}
       </div>
       <DocsBody>
         <MDXContent
@@ -80,14 +89,6 @@ export default async function Page(props: {
             },
           })}
         />
-        {page.data.lastModified && (
-          <div className="text-sm text-muted-foreground bg-card rounded-md p-1.5 w-fit">
-            Ultima atualização:{" "}
-            <span>
-              {format(page.data.lastModified, "PPPpp", { locale: ptBR })}
-            </span>
-          </div>
-        )}
         {page.data.index ? <DocsCategory url={page.url} /> : null}
       </DocsBody>
     </DocsPage>
