@@ -1,5 +1,4 @@
 {
-  "title": "Guia da Linguagem",
-  "pages": ["./basics/index", "./basic-operators/index"],
-  "icon": "BookMarked"
+  "title": "Guia da linguagem",
+  "pages": ["basics", "basics-operators"]
 }

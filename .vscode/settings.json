@@ -14,5 +14,6 @@
     "**/.hg/**",
     "**/.svn/**",
     "**/*.mdx"
-  ]
+  ],
+  "todo-tree.tree.scanMode": "current file"
 }

@@ -17,6 +17,8 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import Link from "next/link";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export const revalidate = false;
 
@@ -78,7 +80,15 @@ export default async function Page(props: {
             },
           })}
         />
-        {page.data ? <DocsCategory url={page.url} /> : null}
+        {page.data.lastModified && (
+          <div className="text-sm text-muted-foreground bg-card rounded-md p-1.5 w-fit">
+            Ultima atualização:{" "}
+            <span>
+              {format(page.data.lastModified, "PPPpp", { locale: ptBR })}
+            </span>
+          </div>
+        )}
+        {page.data.index ? <DocsCategory url={page.url} /> : null}
       </DocsBody>
     </DocsPage>
   );
