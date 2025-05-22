@@ -4,7 +4,6 @@ import {
   DocsBody,
   DocsDescription,
   DocsTitle,
-  EditOnGitHub,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
@@ -17,8 +16,6 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import Link from "next/link";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
 export const revalidate = false;
 
@@ -38,23 +35,21 @@ export default async function Page(props: {
       toc={page.data.toc}
       full={page.data.full}
       tableOfContent={{ style: "clerk" }}
+      editOnGithub={{
+        owner: owner,
+        repo: repo,
+        path: path,
+        sha: "dev",
+      }}
+      lastUpdate={
+        page.data.lastModified ? new Date(page.data.lastModified) : undefined
+      }
+      article={{
+        className: "max-sm:pb-16",
+      }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
-      <div className="flex flex-row gap-2 items-center mb-4">
-        <EditOnGitHub
-          href={`https://github.com/${owner}/${repo}/blob/dev/${path}`}
-        />
-
-        {page.data.lastModified && (
-          <div className="text-sm text-muted-foreground bg-card rounded-md p-1.5 w-fit select-none">
-            Ultima modificação:{" "}
-            <span>
-              {format(page.data.lastModified, "PPP", { locale: ptBR })}
-            </span>
-          </div>
-        )}
-      </div>
       <DocsBody>
         <MDXContent
           components={getMDXComponents({
