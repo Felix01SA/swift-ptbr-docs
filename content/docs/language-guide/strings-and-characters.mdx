@@ -1,0 +1,692 @@
+---
+title: Strings e Caracteres
+description: Cada letra é uma estrela, e juntas brilham no código ✨
+---
+
+import { SubstringExemple } from "@/components/substring-example";
+import {
+  UTF8RepresentationExemple,
+  UTF16RepresentationExemple,
+  UnicodeScalarRepresentationExemple,
+} from "@/components/utf-representation-exemple";
+
+Uma _string_ é uma série de caracteres, como `"olá, mundo"` ou `"albatroz"`. As strings Swift são representadas pelo tipo de `String`. O conteúdo de uma `String` pode ser acessado de várias maneiras, inclusive como uma coleção de valores de caracteres.
+
+Os tipos de `String` e `Character` do Swift fornecem uma maneira rápida e compatível com Unicode de trabalhar com texto em seu código. A sintaxe para criação e manipulação de strings é leve e legível, com uma sintaxe literal de string semelhante a C. A concatenação de strings é tão simples quanto combinar duas strings com o operador `+`, e a mutabilidade de strings é gerenciada escolhendo entre uma constante ou uma variável, assim como qualquer outro valor no Swift. Você também pode usar strings para inserir constantes, variáveis, literais e expressões em strings mais longas, em um processo conhecido como interpolação de strings. Isso facilita a criação de valores de string personalizados para exibição, armazenamento e impressão.
+
+Apesar dessa simplicidade de sintaxe, o tipo de string do Swift é uma implementação de string rápida e moderna. Cada string é composta por caracteres Unicode independentes de codificação e fornece suporte para acessar esses caracteres em várias representações Unicode.
+
+<Callout title="Nota">
+O tipo String do Swift é conectado à classe NSString da Foundation. A Foundation também estende o String para expor os métodos definidos pelo `NSString. Isso significa que, se você importar a Fundação, poderá acessar esses métodos `NSString no String sem fundição.
+
+Para obter mais informações sobre como usar String com Foundation e Cocoa, consulte Bridging Between String e [`NSString](https://developer.apple.com/documentation/swift/string#2919514).
+
+</Callout>
+
+## Strings Literais [#string-literals]
+
+Você pode incluir valores de String predefinidos dentro do seu código como literais de string. Uma _string literal_ é uma sequência de caracteres cercada por aspas duplas (`"`).
+
+Use uma string literal como um valor inicial para uma constante ou variável:
+
+```swift
+let someString = "Algum valor literal de string"
+```
+
+Observe que o Swift infere um tipo de `String` para a constante `someString` porque é inicializado com um valor literal de string.
+
+### Strings Literais multilinhas [#multiline-string-literals]
+
+Se você precisar de uma string que se estende por várias linhas, use uma string literal de várias linhas - uma sequência de caracteres cercada por três aspas duplas:
+
+```swift lineNumbers
+let quotation = """
+O Coelho Branco colocou seus óculos. "Onde devo começar,
+
+Por favor, sua Majestade?" Ele perguntou.
+
+"Comece no começo", disse o Rei severamente, "e siga em frente
+
+Até você chegar ao fim; então pare."
+"""
+```
+
+Um literal de string de várias linhas inclui todas as linhas entre aspas de abertura e fechamento. A string começa na primeira linha após as aspas de abertura (`"""`) e termina na linha antes das aspas de fechamento, o que significa que nenhuma das strings abaixo começa ou termina com uma quebra de linha:
+
+```swift
+let singleLineString = "Estes são os mesmos."
+let multilineString = """
+Estes são os mesmos.
+"""
+```
+
+Quando seu código-fonte inclui uma quebra de linha dentro de uma string literal de várias linhas, essa quebra de linha também aparece no valor da string. Se você quiser usar quebras de linha para tornar seu código-fonte mais fácil de ler, mas não quiser que as quebras de linha façam parte do valor da string, escreva uma barra invertida (`\`) no final dessas linhas:
+
+```swift lineNumbers
+let softWrappedQuotation = """
+O Coelho Branco colocou seus óculos. "Onde devo começar, \
+
+Por favor, sua Majestade?" Ele perguntou.
+
+"Comece do começo", disse o Rei severamente, "e siga em fra \
+
+Até você chegar ao fim; então pare."
+"""
+```
+
+Para fazer uma string literal de várias linhas que começa ou termina com um feed de linha, escreva uma linha em branco como a primeira ou última linha. Por exemplo:
+
+```swift lineNumbers
+let lineBreaks = """
+
+Esta corda começa com uma quebra de linha.
+Também termina com uma quebra de linha.
+
+"""
+```
+
+Uma string de várias linhas pode ser retida para corresponder ao código ao redor. O espaço em branco antes das aspas de fechamento (`"""`) diz a Swift qual espaço em branco ignorar antes de todas as outras linhas. No entanto, se você escrever espaço em branco no início de uma linha além do que está antes das aspas de fechamento, esse espaço em branco será incluído.
+
+![String whitespace example](/string-whitespace-exemple.png)
+
+No exemplo acima, mesmo que todo o literal da string de várias linhas esteja redentado, a primeira e a última linhas da string não começam com nenhum espaço em branco. A linha do meio tem mais recuo do que as aspas de fechamento, então começa com esse recuo extra de quatro espaços.
+
+### Caracteres Especiais em String Literais [#special-characters-in-string-literals]
+
+Os literais de string podem incluir os seguintes caracteres especiais:
+
+{/* \0 (caractere nulo), \\ (barra invertida), \t (guia horizontal), \n (alimentação de linha), \r (retorno de carro), \" (aspas duplas) e \' (aspas simples) */}
+
+| Caractere | Descrição         | Tipo               |
+| --------- | ----------------- | ------------------ |
+| `\0`      | Caractere nulo    | Especial de escape |
+| `\\`      | Barra Invertida   | Especial de escape |
+| `\t`      | Guia horizontal   | Especial de escape |
+| `\n`      | Nova linha        | Especial de escape |
+| `\r`      | Retorno carro     | Especial de escape |
+| `\"`      | Aspas duplas      | Especial de escape |
+| `\'`      | Aspas simples     | Especial de escape |
+| `\uXXXX'` | Caractere Unicode | Unicode arbitrário |
+
+Um valor escalar Unicode arbitrário, escrito como `\u{n}`, onde `n` é um número hexadecimal de 1 a 8 dígitos (**Unicode é discutido em [Unicode](/docs/laanguage-guide/string-and-character#unicode) abaixo**)
+
+O código abaixo mostra quatro exemplos desses caracteres especiais. A constante `wiseWords` contém duas aspas duplas escapadas. As constantes `dollarSign`, `blackHeart` e `sparklingHeart` demonstram o formato escalar Unicode:
+
+```swift lineNumbers
+let wiseWords = "\"A imaginação é mais importante do que o conhecimento\" - Einstein" // "A imaginação é mais importante do que o conhecimento" - Einstein
+let dollarSign = "\u{24}" // $, Unicode escalar U+0024
+let blackHeart = "\u{2665}" // ♥, Unicode escalar U+2665
+let sparklingHeart = "\u{1F496}" // 💖, Unicode escalar U+1F496
+```
+
+Como os literais de string de várias linhas usam três aspas duplas em vez de apenas uma, você pode incluir uma aspa dupla (`"`) dentro de uma string literal de várias linhas sem escapar dela. Para incluir o texto `"""` em uma string de várias linhas, escape de pelo menos uma das aspas. Por exemplo:
+
+```swift lineNumbers
+let threeDoubleQuotationMarks = """
+Escapando a primeira aspas \"""
+Escapando de todas as três aspas \"\"\"
+"""
+```
+
+### Delimitadores de String Estendidos [#extends-string-delimiters]
+
+Você pode colocar uma string literal dentro de _delimitadores estendidos_ para incluir caracteres especiais em uma string sem invocar seu efeito. Você coloca sua string entre aspas (`"`) e a envolve com sinais numéricos (`#`). Por exemplo, imprimir a string literal `#"Line 1\nLine 2"#{:swift}` imprime a sequência de escape de alimentação de linha (`\n`) em vez de imprimir a string em duas linhas.
+
+Se você precisar dos efeitos especiais de um caractere em uma string literal, combine o número de sinais numéricos dentro da string seguindo o caractere de escape (`\`). Por exemplo, se sua string for `#"Line 1\nLine 2"#` e você quiser quebrar a linha, você pode usar `#"Line 1\#nLine 2"#` em vez disso. Da mesma forma, `###"Line1\###nLine2"###` também quebra a linha.
+
+Os literais de string criados usando delimitadores estendidos também podem ser literais de string de várias linhas. Você pode usar delimitadores estendidos para incluir o texto `"""` em uma string de várias linhas, substituindo o comportamento padrão que termina o literal. Por exemplo:
+
+```swift
+let threeMoreDoubleQuotationMarks = #"""
+Aqui estão mais três citações duplas: """
+"""#
+```
+
+## Inicializando uma String vazia [#initializing-an-empty-string]
+
+Para criar um valor de String vazio como ponto de partida para a construção de uma string mais longa, atribua uma string literal vazia a uma variável ou inicialize uma nova instância de String com a sintaxe do inicializador:
+
+```swift
+var emptyString = "" // String literal vazio
+var anotherEmptyString = String() // syntax do inicializador
+// Essas duas strings estão vazias e são equivalentes uma à outra
+```
+
+Descubra se um valor de String está vazio verificando sua propriedade Boolean `isEmpty`:
+
+```swift
+if emptyString.isEmpty {
+  print("Nada para ver aqui.")
+}
+```
+
+## Mutabilidade de Strings [#string-mutability]
+
+Você indica se uma String específica pode ser modificada (ou _mutada_) atribuindo-a a uma variável (nesse caso, pode ser modificada) ou a uma constante (caso em que não pode ser modificada):
+
+```swift lineNumbers
+var variableString = "Cavalo"
+variableString += " e carroça"
+// variableString agora é "Cavalo e carroça"
+
+let constantString = "Batman"
+constantString += " e outro Batman"
+// Isso relata um erro de tempo de compilação - uma string constante não pode ser modificada
+```
+
+<Callout title="Nota">
+  Essa abordagem é diferente da mutação de strings em Objective-C e Cocoa, onde
+  você escolhe entre duas classes (`NSString` e `NSMutableString`) para indicar
+  se uma string pode ser mutada.
+</Callout>
+
+## Strings são tipos de valores [#string-are-value-types]
+
+O tipo de String de Swift é um tipo de valor. Se você criar um novo valor de String, esse valor de String será copiado quando for passado para uma função ou método, ou quando for atribuído a uma constante ou variável. Em cada caso, uma nova cópia do valor String existente é criada, e a nova cópia é passada ou atribuída, não a versão original. Os tipos de valor são descritos em [Estruturas e Enumeração São Tipos de Valor](/docs/language-guide/structures-and-classes#structures-and-enumerations-are-value-types).
+
+O comportamento de String de _cópia por padrão_ do Swift garante que, quando uma função ou método lhe passa um valor de String, fica claro que você possui esse valor de String exato, independentemente de onde ele veio. Você pode ter certeza de que a string que você passou não será modificada, a menos que você mesmo a modifique.
+
+Nos bastidores, o compilador da Swift otimiza o uso de strings para que a cópia real ocorra apenas quando for absolutamente necessário. Isso significa que você sempre obtém um ótimo desempenho ao trabalhar com strings como tipos de valor.
+
+## Trabalhando com Caracteres [#working-with-characters]
+
+Você pode acessar os valores de caracteres individuais para uma String iterando sobre a string com um loop `for-in`:
+
+```swift lineNumbers
+// [!code focus:3]
+for character in "Gelo!🥶" {
+  print(character)
+}
+// G
+// e
+// l
+// o
+// !
+// 🥶
+```
+
+O loop `for-in` é descrito em [For-In Loops](/docs/language-guide/control-flow#for-in-loops).
+
+Alternativamente, você pode criar uma constante ou variável de `Character` independente a partir de uma string literal de caractere único, fornecendo uma anotação de tipo de caractere:
+
+```swift
+let exclamationMark: Character = "!"
+```
+
+Os valores de string podem ser construídos passando uma matriz de valores de caracteres como um argumento para seu inicializador:
+
+```swift
+let catCharacters: [Character] = ["G", "a", "t", "o", "!", "🐱"]
+let catString = String(catCharacters)
+print(catString) // "Gato!🐱"
+```
+
+## Concatenando Strings e Caracteres [#concatenation-string-and-characters]
+
+Os valores de String podem ser adicionados (ou _concatenados_) com o operador de adição (`+`) para criar um novo valor de String:
+
+```swift lineNumbers
+let string1 = "Olá"
+let string2 = " pessoal"
+var welcome = string1 + string2
+// welcome agora é igual a "Olá pessoal"
+```
+
+Você também pode anexar um valor de String a uma variável de String existente com o operador de atribuição de adição (`+=`):
+
+```swift
+var instruction = "olhe para frente"
+instruction += string2
+// instruction agora é igual a "olhe para frente pessoal"
+```
+
+Você pode anexar um valor de Caractere a uma variável String com o método `append(){:swift}` do tipo String:
+
+```swift
+let exclamationMark: Character = "!"
+welcome.append(exclamationMark)
+// welcome agora é igual a "Olá mundo!"
+```
+
+<Callout title="Nota">
+  Você não pode anexar uma String ou Caractere a uma variável de Caractere
+  existente, porque um valor de Caractere deve conter apenas um único caractere.
+</Callout>
+
+Se você estiver usando literais de string de várias linhas para construir as linhas de uma string mais longa, você deseja que cada linha da string termine com uma quebra de linha, incluindo a última linha. Por exemplo:
+
+```swift lineNumbers
+let badStart = """
+um
+dois
+"""
+
+let end = """
+três
+"""
+
+print(badStart + end)
+// Retorna 2 linhas:
+// um
+// doistrês
+
+let goodStart = """
+um
+dois
+
+"""
+
+print(goodStart + end)
+// Retorna 3 linas:
+// um
+// dois
+// três
+```
+
+No código acima, a concatenação do `badStart` com o fim produz uma string de duas linhas, que não é o resultado desejado. Como a última linha de `badStart` não termina com uma quebra de linha, essa linha é combinada com a primeira linha de fim. Em contraste, ambas as linhas de `goodStart` terminam com uma quebra de linha, portanto, quando combinadas com `end`, o resultado tem três linhas, como esperado.
+
+## Interpolação de Strings [#string-interpolation]
+
+A _interpolação de string_ é uma maneira de construir um novo valor de string a partir de uma mistura de constantes, variáveis, literais e expressões, incluindo seus valores dentro de um literal de string. Você pode usar a interpolação de strings em literais de string de linha única e multilinha. Cada item que você insere no literal de string é envolvido em um par de parênteses, prefixado por uma barra invertida (`\`):
+
+```swift
+let multiplier = 3
+let message = "\(multiplier) vezes 2.5 é \(Double(multiplier) * 2.5)"
+// message é "3 vezes 2.5 é 7.5"
+```
+
+No exemplo acima, o valor do multiplicador é inserido em uma string literal como `\(multiplicador)`. Este espaço reservado é substituído pelo valor real do multiplicador quando a interpolação da string é avaliada para criar uma string real.
+
+O valor do multiplicador também faz parte de uma expressão maior mais tarde na string. Esta expressão calcula o valor de `Double(multiplier) * 2,5` e insere o resultado (7,5) na string. Neste caso, a expressão é escrita como `\(Double(multiplier) * 2.5)` quando está incluída dentro do literal da string.
+
+Você pode usar delimitadores de string estendidos para criar strings contendo caracteres que, de outra forma, seriam tratados como uma interpolação de strings. Por exemplo:
+
+```swift
+print(#"Escreva uma string interpolada em Swift usando \(multiplier)."#)
+// "Escreva uma string interpolada em Swift usando \(multiplier)."
+```
+
+Para usar a interpolação de strings dentro de uma string que usa delimitadores estendidos, combine o número de sinais numéricos após a barra invertida com o número de sinais numéricos no início e no final da string. Por exemplo:
+
+```swift
+print(#"6 vezes 7 é \#(6 * 7)."#)
+// 6 vezes 7 é 42
+```
+
+<Callout title="Nota">
+  As expressões que você escreve dentro de parênteses dentro de uma string
+  interpolada não podem conter uma barra invertida sem escape (`\`), um retorno
+  de carro ou um feed de linha. No entanto, eles podem conter outros literais de
+  string.
+</Callout>
+
+## Unicode [#unicode]
+
+_Unicode_ é um padrão internacional para codificar, representar e processar texto em diferentes sistemas de escrita. Ele permite que você represente quase qualquer caractere de qualquer idioma em uma forma padronizada e leia e escreva esses caracteres para e de uma fonte externa, como um arquivo de texto ou página da web. Os tipos de String e Caractere do Swift são totalmente compatíveis com Unicode, conforme descrito nesta seção.
+
+### Valores Escalares Unicode
+
+Nos bastidores, o tipo de String nativo do Swift é construído a partir de valores escalares _Unicode_. Um valor escalar Unicode é um número exclusivo de 21 bits para um caractere ou modificador, como `U+0061` para _LATIN SMALL LETTER A_ ("a"), ou `U+1F425` para _FRONT-FACING BABY CHICK_ ("🐥").
+
+Observe que nem todos os valores escalares Unicode de 21 bits são atribuídos a um caractere - alguns escalares são reservados para atribuição futura ou para uso na codificação UTF-16. Os valores escalares que foram atribuídos a um caractere normalmente também têm um nome, como _LATIN SMALL LETTER A_ e _FRONT-FACING BABY CHICK_ nos exemplos acima.
+
+### Clusters de Grafema Estendidos [#extended-grapheme-clusters]
+
+Cada instância do tipo de `Character` de Swift representa um único _cluster de grafema estendido_. Um cluster de grafema estendido é uma sequência de um ou mais escalares Unicode que (quando combinados) produzem um único caractere legível por humanos.
+
+Aqui está um exemplo. A letra é pode ser representada como o único escalar Unicode é (_LETRA MINÚSCULA LATINA E COM AGUDO_, ou `U+00E9`). No entanto, a mesma letra também pode ser representada como um par de escalares—uma letra padrão e (_LATIN SMALL LETTER E_, ou `U+0065`), seguida pelo escalar _COMBINING ACUTE ACCENT_ (`U+0301`). O escalar _COMBINING ACUTE ACCENT_ é aplicado graficamente ao escalar que o precede, transformando um e em um é quando é renderizado por um sistema de renderização de texto com conhecimento de Unicode.
+
+Em ambos os casos, a letra é representada como um único valor de `Character` Swift que representa um cluster de grafema estendido. No primeiro caso, o cluster contém um único escalar; no segundo caso, é um cluster de dois escalares:
+
+```swift
+let eAcute: Character = "\u{E9}" // é
+let combinedEAcute: Character = "\u{65}\u{301}" // e seguido por  ́
+// eAcute é "é", combinedEAcute é "é"
+```
+
+Clusters de grafema estendidos são uma maneira flexível de representar muitos caracteres de script complexos como um único valor de caractere. Por exemplo, as sílabas Hangul do alfabeto coreano podem ser representadas como uma sequência pré-composta ou decomposta. Ambas as representações se qualificam como um único valor de `Character` no Swift:
+
+```swift
+let precomposed: Character = "\u{D55C}" // 한
+let decomposed: Character = "\u{1112}\u{1161}\u{11AB}" // ᄒ, ᅡ, ᆫ
+// precomposed é 한, decomposed é 한
+```
+
+Clusters de grafemas estendidos permitem escalares para incluir marcas (como `COMBINING ENCLOSING CIRCLE` ou `U+20DD`) para incluir outros escalares Unicode como parte de um único valor de Caractere:
+
+```swift
+let enclosedEAcute: Character = "\u{E9}\u{20DD}" // é⃝
+```
+
+Escalares Unicode para símbolos indicadores regionais podem ser combinados em pares para criar um único valor de Caractere, como esta combinação de _REGIONAL INDICATOR SYMBOL LETTER U_ (`U+1F1F1FA`) e _REGIONAL INDICATOR SYMBOL LETTER S_ (`U+1F1F8`):
+
+```swift
+let regionalIndicatorForUS: Character = "\u{1F1FA}\u{1F1F8}"
+// regionalIndicatorForUS é 🇺🇸
+```
+
+## Contando Caracteres [#count-characters]
+
+Para recuperar uma contagem dos valores de caracteres em uma string, use a propriedade `count` da string:
+
+```swift
+let unusualMenagerie = "Coala 🐨, Caracol 🐌, Pinguim 🐧, Dromedário 🐪"
+print("unusualMenagerie tem \(unusualMenagerie.count) caracteres")
+// unusualMenagerie tem 43 caracteres
+```
+
+Observe que o uso de clusters de grafemas estendidos por Swift para valores de caracteres significa que a concatenação e modificação de strings nem sempre podem afetar a contagem de caracteres de uma string.
+
+Por exemplo, se você inicializar uma nova string com a palavra `cafe` de quatro caracteres e, em seguida, anexar um _COMBINING ACUTE ACCENT_ (`U+0301`) ao final da string, a string resultante ainda terá uma contagem de caracteres de 4, com um quarto caractere de é, não e:
+
+```swift lineNumbers
+var word = "cafe"
+print("O numero de caracteres na palavra \(word) é \(word.count)")
+// O numero de caracteres na palavra cafe é 4
+
+word += "\u{301}" // COMBINING ACUTE ACCENT, U+0301
+
+print("O numero de caracteres na palavra \(word) é \(word.count)")
+// O numero de caracteres na palavra cafe é 4
+```
+
+<Callout title="Nota">
+Os clusters de grafemas estendidos podem ser compostos de vários escalares Unicode. Isso significa que diferentes caracteres - e diferentes representações do mesmo caractere - podem exigir diferentes quantidades de memória para armazenar. Por causa disso, os caracteres no Swift não ocupam a mesma quantidade de memória dentro da representação de uma string. Como resultado, o número de caracteres em uma string não pode ser calculado sem iterar através da string para determinar seus limites de cluster de grafema estendidos. Se você estiver trabalhando com valores de string particularmente longos, esteja ciente de que a propriedade de contagem deve iterar sobre os escalares Unicode em toda a string para determinar os caracteres dessa string.
+
+A contagem de caracteres retornados pela propriedade count nem sempre é a mesma que a propriedade length de uma NSString que contém os mesmos caracteres. O comprimento de uma NSString é baseado no número de unidades de código de 16 bits dentro da representação UTF-16 da string e não no número de clusters de grafema estendidos Unicode dentro da string.
+
+</Callout>
+
+## Acessando e Modificando uma String [#accessing-and-modifying-a-string]
+
+Você acessa e modifica uma string através de seus métodos e propriedades, ou usando a sintaxe de subscrito.
+
+### Índices de string [#string-indices]
+
+Cada valor de String tem um _tipo de índice_ associado, `String.Index`, que corresponde à posição de cada Caractere na string.
+
+Como mencionado acima, caracteres diferentes podem exigir diferentes quantidades de memória para armazenar, portanto, para determinar qual Caractere está em uma posição específica, você deve iterar sobre cada escalar Unicode a partir do início ou do final dessa String. Por esse motivo, as strings Swift não podem ser indexadas por valores inteiros.
+
+Use a propriedade `startIndex` para acessar a posição do primeiro Caractere de uma String. A propriedade `endIndex` é a posição após o último caractere em uma String. Como resultado, a propriedade `endIndex` não é um argumento válido para o subscrito de uma string. Se uma String estiver vazia, `startIndex` e `endIndex` serão iguais.
+
+Você acessa os índices antes e depois de um determinado índice usando os métodos `index(before:){:swift}` e `index(after:){:swift}` de String. Para acessar um índice mais distante do índice fornecido, você pode usar o método `index(_:offsetBy:){:swift}` em vez de chamar um desses métodos várias vezes.
+
+Você pode usar a sintaxe de subscrito para acessar o Caractere em um determinado índice de String.
+
+```swift lineNumbers
+let greeting = "Boa tarde!"
+greeting[greeting.startIndex] // B
+greeting[greeting.endIndex] // !
+
+let index = greeting.index(greeting.startIndex, offsetBy: 7)
+greeting[index] // d
+```
+
+Tentar acessar um índice fora do intervalo de uma string ou um Caractere em um índice fora do intervalo de uma string acionará um erro de tempo de execução.
+
+```swift
+greeting[greeting.endIndex] // Error
+greeting.index(after: greeting.endIndex) // Error
+```
+
+Use a propriedade de `indices` para acessar todos os índices de caracteres individuais em uma string.
+
+```swift
+for index in greeting.indices {
+  print("\(greeting[index]) ", terminator: "") // B o a  t a r d e !
+}
+```
+
+<Callout title="Nota">
+Você pode usar as propriedades `startIndex` e `endIndex` e os métodos `index(before:){:swift}`, `index(after:){:swift}` e `index(_:offsetBy:){:swift}` em qualquer tipo que esteja em conformidade com o protocolo `Collection`. Isso inclui String, como mostrado aqui, bem como tipos de coleção, como Array, Dictionary e Set.
+</Callout>
+
+### Inserção e remoção [#insert-and-removing]
+
+O insira um único caractere em uma string em um índice especificado, use o método `insert(_:at:){:swift}` e para inserir o conteúdo de outra string em um índice especificado, use o método `insert(contentsOf:at:){:swift}`.
+
+```swift lineNumbers
+var welcome = "Olá"
+welcome.insert("!", at: welcome.endIndex)
+// welcome agora é igual a "Olá!"
+
+welcome.insert(contentsOf: " pessoal", at: welcome.index(before: welcome.endIndex))
+// welcome agora é "Olá pessoal!"
+```
+
+Para remover um único caractere de uma string em um índice especificado, use o método `remove(at:){:swift}` e para remover uma substring em um intervalo especificado, use o método `removeSubrange(_:){:swift}`:
+
+```swift lineNumbers
+welcome.remove(at: welcome.index(before: welcome.endIndex))
+// welcome agora é "Olá pessoal"
+
+let range = welcome.index(welcome.endIndex, offsetBy: -8)..<welcome.endIndex
+welcome.removeSubrange(range)
+// welcome agora é "Olá"
+```
+
+<Callout title="Nota">
+Você pode usar os métodos `insert(_:at:){:swift}`, `insert(contentsOf:at:){:swift}`, `remove(at:){:swift}` e `removeSubrange(_:){:swift}` em qualquer tipo que esteja em conformidade com o protocolo `RangeReplaceableCollection`. Isso inclui String, como mostrado aqui, bem como tipos de coleção, como Array, Dictionary e Set.
+</Callout>
+
+## Substrings [#substrings]
+
+Quando você obtém uma substring de uma string, por exemplo, usando um subscrito ou um método como `prefix(_:){:swift}` o resultado é uma instância de [Substring](https://developer.apple.com/documentation/swift/substring), não outra string. Substrings no Swift têm a maioria dos mesmos métodos que strings, o que significa que você pode trabalhar com substrings da mesma forma que trabalha com strings. No entanto, ao contrário das strings, você usa substrings por apenas um curto período de tempo enquanto executa ações em uma string. Quando você estiver pronto para armazenar o resultado por mais tempo, você converte a substring em uma instância de String. Por exemplo:
+
+```swift lineNumbers
+let greeting = "Olá, mundo!"
+let index = greeting.firstIndex(of: ",") ?? greeting.endIndex
+let beginning = greeting[..<index]
+// beginning é "Olá"
+
+// Converta o resultado em uma String para armazenamento a longo prazo
+let newString = String(beginning)
+```
+
+Como strings, cada substring tem uma região de memória onde os caracteres que compõem a substring são armazenados. A diferença entre strings e substrings é que, como uma otimização de desempenho, uma substring pode reutilizar parte da memória que é usada para armazenar a string original ou parte da memória que é usada para armazenar outra substring. (As strings têm uma otimização semelhante, mas se duas strings compartilharem memória, elas são iguais.) Essa otimização de desempenho significa que você não precisa pagar o custo de desempenho de copiar a memória até modificar a string ou a substring. Como mencionado acima, as substrings não são adequadas para armazenamento a longo prazo—porque reutilizam o armazenamento da string original, toda a string original deve ser mantida na memória enquanto qualquer uma de suas substrings estiver sendo usada.
+
+No exemplo acima, a `greeting` é uma string, o que significa que tem uma região de memória onde os caracteres que compõem a string são armazenados. Como o início é uma substring da `greeting`, ele reutiliza a memória que a `greeting` usa. Em contraste, `newString` é uma string quando é criada a partir da substring, ela tem seu próprio armazenamento. A figura abaixo mostra essas relações:
+
+<SubstringExemple />
+
+<Callout title="Nota">
+  Tanto a String quanto a Substring estão em conformidade com o protocolo
+  [`StringProtocol`](https://developer.apple.com/documentation/swift/stringprotocol),
+  o que significa que geralmente é conveniente para as funções de manipulação de
+  string aceitarem um valor `StringProtocol`. Você pode chamar essas funções com
+  um valor de String ou Substring.
+</Callout>
+
+## Comparando Strings [#comparing-strings]
+
+O Swift fornece três maneiras de comparar valores textuais: igualdade de string e caracteres, igualdade de prefixo e igualdade de sufixo.
+
+### Igualdade de Strings e Caracteres [#string-and-character-equality]
+
+A igualdade de string e caracteres é verificada com o operador “igual a” (`==`) e o operador “não igual a” (`!=`), conforme descrito em [Operadores de Comparação](/docs/language-guide/basics-operators#comparison-operators):
+
+```swift lineNumbers
+let quotation = "Somos muito parecidos, você e eu."
+let sameQuotation = "Somos muito parecidos, você e eu."
+
+if quotation == sameQuotation { // true
+  print("Essas duas strings são consideradas iguais")
+}
+```
+
+Dois valores de String (ou dois valores de Character) são considerados iguais se seus clusters de grafemas estendidos forem canonicamente equivalentes. Clusters de grafemas estendidos são canonicamente equivalentes se tiverem o mesmo significado e aparência linguísticos, mesmo que sejam compostos de diferentes escalares Unicode nos bastidores.
+
+Por exemplo, _LATIN SMALL LETTER E WITH ACUTE_ (`U+00E9`) é canonicamente equivalente à _LATIN SMALL LETTER E_ (`U+0065`) seguida de _COMBINING ACUTE ACCENT_ (`U+0301`). Ambos os clusters de grafema estendidos são maneiras válidas de representar o caractere `é` e, portanto, são considerados canonicamente equivalentes:
+
+```swift lineNumbers
+// "Você quer um café?" Usando LATIN SMALL LETTER E WITH ACUTE
+let eAcuteQuestion = "Você quer um caf\u{e9}?"
+
+// "Você quer um café?" Usando LATIN SMALL LETTER E e COMBINING ACUTE ACCENT
+let combinedEAcuteQuestion = "Voce quer um caf\u{65}\u{301}?"
+
+if eAcuteQuestion == combinedEAcuteQuestion { // true
+  print("Essas duas strings são consideradas iguais")
+}
+```
+
+Por outro lado, a _LATIN CAPITAL LETTER A_ (`U+0041`, ou "A"), como usada em inglês, não é equivalente à _CYRILLIC CAPITAL LETTER A_ (`U+0410`, ou "А"), como usada em russo. Os caracteres são visualmente semelhantes, mas não têm o mesmo significado linguístico:
+
+```swift
+let latinCapitalLetterA: Character = "\u{41}"
+
+let cyrillicCapitalLetterA: Character = "\u{0410}"
+
+if latinCapitalLetterA != cyrillicCapitalLetterA { //false
+  print("Essas duas strings não são consideradas iguais")
+}
+```
+
+<Callout title="Nota">
+  As comparações de strings e caracteres no Swift não são sensíveis à
+  localidade.
+</Callout>
+
+### Igualdade de prefixo e sufixo [#prefix-and-suffix-equality]
+
+Para verificar se uma string tem um prefixo ou sufixo de string específico, chame os métodos `hasPrefix(_:){:swift}` e `hasSuffix(_:){:swift}` da string, ambos os quais pegam um único argumento do tipo String e retornam um valor booleano.
+
+Os exemplos abaixo consideram uma série de cordas que representam os locais das cenas dos dois primeiros atos de _Romeu e Julieta de Shakespeare_:
+
+```swift lineNumbers
+let romeoAndJuliet = [
+  "Ato 1 Cena 1: Verona, Um lugar público",
+  "Ato 1 Cena 2: Mansão de Capuleto",
+  "Ato 1 Cena 3: Um quarto na mansão de Capuleto",
+  "Ato 1 Cena 4: Uma rua do lado de fora da mansão de Capuleto",
+  "Ato 1 Cena 5: O Grande Salão na mansão de Capuleto",
+  "Ato 2 Cena 1: Fora da mansão de Capuleto",
+  "Ato 2 Cena 2: Pomar de Capuleto",
+  "Ato 2 Cena 3: Fora da cela do Frei Lawrence",
+  "Ato 2 Cena 4: Uma rua em Verona",
+  "Ato 2 Cena 5: Mansão de Capuleto",
+  "Ato 2 Cena 6: A cela do Frei Lawrence"
+]
+```
+
+Você pode usar o método `hasPrefix(_:){:swift}` com a matriz `romeoAndJuliet` para contar o número de cenas no Ato 1 da peça:
+
+```swift lineNumbers
+var act1SceneCount = 0
+
+for scene in romeoAndJuliet {
+  if scene.hasPrefix("Act 1 ") {
+    act1SceneCount += 1
+  }
+}
+
+print("Existem \(act1SceneCount) cenas no Ato 1")
+```
+
+Da mesma forma, use o método `hasSuffix(_:){:swift}` para contar o número de cenas que acontecem dentro ou ao redor da mansão de Capuleto e da cela do Frei Lawrence:
+
+```swift lineNumbers
+var mansionCount = 0
+var cellCount = 0
+
+for scene in romeoAndJuliet {
+  if scene.hasSuffix("Mansão de Capuleto") {
+    mansionCount += 1
+  } else if scene.hasSuffix("A cela do Frei Lawrence") {
+    cellCount =+ 1
+  }
+}
+
+print("Cenas da mansão \(mansionCount); cenas da cela \(cellCount)")
+```
+
+<Callout title="Nota">
+Os métodos `hasPrefix(_:){:swift}` e `hasSuffix(_:){swift}` realizam uma comparação de equivalência canônica caractere por caractere entre os clusters de grafemas estendidos em cada string, conforme descrito em [String and Character Equality](#string-and-character-equality).
+</Callout>
+
+## Representações Unicode de Strings [#unicode-representation-of-strings]
+
+Quando uma string Unicode é gravada em um arquivo de texto ou em algum outro armazenamento, os escalares Unicode nessa string são codificados em uma das várias formas de codificação definidas pelo Unicode. Cada forma codifica a string em pequenos pedaços conhecidos como unidades de código. Estes incluem o formulário de codificação UTF-8 (que codifica uma string como unidades de código de 8 bits), o formulário de codificação UTF-16 (que codifica uma string como unidades de código de 16 bits) e o formulário de codificação UTF-32 (que codifica uma string como unidades de código de 32 bits).
+
+O Swift fornece várias maneiras diferentes de acessar representações Unicode de strings. Você pode iterar sobre a string com uma instrução for-in, para acessar seus valores de caracteres individuais como clusters de grafemas estendidos Unicode. Este processo é descrito em [Trabalhando com Caracteres](#working-with-characters).
+
+Alternativamente, acesse um valor de String em uma das três outras representações compatíveis com Unicode:
+
+- Uma coleção de unidades de código UTF-8 (acessadas com a propriedade utf8 da string)
+- Uma coleção de unidades de código UTF-16 (acessadas com a propriedade utf16 da string)
+- Uma coleção de valores escalares Unicode de 21 bits, equivalentes ao formulário de codificação UTF-32 da string (acessado com a propriedade unicodeScalars da string)
+
+Cada exemplo abaixo mostra uma representação diferente da seguinte string, que é composta pelos caracteres D, o, g, !! (_DOUBLE EXCLAMATION MARK_, ou Unicode escalar `U+203C`), e o caractere 🐶 (_DOG FACE_, ou Unicode escalar `U+1F436`):
+
+```swift
+let dogString = "Dog!!🐶"
+```
+
+### Representação UTF-8 [#utf-8-representation]
+
+Você pode acessar uma representação UTF-8 de uma String iterando sobre sua propriedade utf8. Esta propriedade é do tipo `String.UTF8View`, que é uma coleção de valores de 8 bits (`UInt8`) não assinados, um para cada byte na representação UTF-8 da string:
+
+<UTF8RepresentationExemple />
+
+```swift lineNumbers
+for codeUnit in dogString.utf8 {
+  print("\(codeUnit) ", terminator: "")
+}
+// 68 111 103 226 128 188 240 159 144 182
+```
+
+No exemplo acima, os três primeiros valores de unidade de código decimal (68, 111, 103) representam os caracteres D, o e g, cuja representação UTF-8 é a mesma que sua representação ASCII. Os próximos três valores de unidade de código decimal (226, 128, 188) são uma representação UTF-8 de três bytes do caractere _DOUBLE EXCLAMATION MARK_. Os últimos quatro valores `codeUnit` (240, 159, 144, 182) são uma representação UTF-8 de quatro bytes do caractere _DOG FACE_.
+
+### Representação UTF-16 [#utf-16-representation]
+
+Você pode acessar uma representação UTF-16 de uma String iterando sobre sua propriedade utf16. Esta propriedade é do tipo `String.UTF16View`, que é uma coleção de valores não assinados de 16 bits (`UInt16`), um para cada unidade de código de 16 bits na representação UTF-16 da string:
+
+<UTF16RepresentationExemple />
+
+```swift lineNumbers
+for codeUnit in dogString.utf16 {
+  print("\(codeUnit) ", terminator: "")
+}
+// 68 111 103 8252 55357 56374
+```
+
+Novamente, os três primeiros valores de `codeUnit` (68, 111, 103) representam os caracteres D, o e g, cujas unidades de código UTF-16 têm os mesmos valores da representação UTF-8 da string (porque esses escalares Unicode representam caracteres ASCII).
+
+O quarto valor `codeUnit` (8252) é um equivalente decimal do valor hexadecimal 203C, que representa o escalar Unicode `U+203C` para o caractere _DOUBLE EXCLAMATION MARK_. Este caractere pode ser representado como uma única unidade de código em UTF-16.
+
+Os quinto e sextos valores `codeUnit` (55357 e 56374) são uma representação de par substituto UTF-16 do caractere _DOG FACE_. Esses valores são um valor substituto alto de `U+D83D` (valor decimal 55357) e um valor substituto baixo de `U+DC36` (valor decimal 56374).
+
+### Representação Escalar Unicode [#unicode-scalar-representation]
+
+Você pode acessar uma representação escalar Unicode de um valor String iterando sobre sua propriedade `unicodeScalars`. Esta propriedade é do tipo `UnicodeScalarView`, que é uma coleção de valores do tipo `UnicodeScalar`.
+
+Cada `UnicodeScalar` tem uma propriedade de valor que retorna o valor de 21 bits do escalar, representado dentro de um valor `UInt32`:
+
+<UnicodeScalarRepresentationExemple />
+
+```swift lineNumbers
+for scalar in dogString.unicodeScalars {
+  print("\(scalar.value) ", terminator: "")
+}
+// 68 111 103 8252 128054
+```
+
+As propriedades de valor para os três primeiros valores `UnicodeScalar` (68, 111, 103) mais uma vez representam os caracteres D, o e g.
+
+O quarto valor codeUnit (8252) é novamente um equivalente decimal do valor hexadecimal 203C, que representa o escalar Unicode `U+203C` para o caractere _DOUBLE EXCLAMATION MARK_.
+
+A propriedade de valor do quinto e último `UnicodeScalar`, 128054, é um equivalente decimal do valor hexadecimal 1F436, que representa o escalar Unicode `U+1F436` para o caractere _DOG FACE_.
+
+Como alternativa à consulta de suas propriedades de valor, cada valor `UnicodeScalar` também pode ser usado para construir um novo valor de String, como com interpolação de string:
+
+```swift lineNumbers
+// [!code focus:3]
+for scalar in dogString.unicodeScalars {
+  print("\(scalar) ")
+}
+// D
+// o
+// g
+// !!
+// 🐶
+```
