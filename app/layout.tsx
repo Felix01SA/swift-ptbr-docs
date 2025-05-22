@@ -9,7 +9,7 @@ const inter = Inter({
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
+    <html lang="pt-BR" className={inter.className} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
         <RootProvider
           i18n={{
@@ -19,6 +19,8 @@ export default function Layout({ children }: { children: ReactNode }) {
               toc: "Nesta Pagina",
               nextPage: "Proxima Pagina",
               previousPage: "Pagina Anterior",
+              lastUpdate: "Ultima modificação em",
+              editOnGithub: "Editar no Github",
             },
           }}
         >
